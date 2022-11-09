@@ -16,6 +16,11 @@ public class GroupUserService implements IGroupUserService {
     private IGroupUserRepository groupUserRepository;
 
     @Override
+    public GroupUser findGroupUserById(long id) {
+        return groupUserRepository.findById(id).orElse(null);
+    }
+
+    @Override
     public void addUserToGroup(List<User> users, Group group) {
         for (User user : users) {
             GroupUser groupUser = new GroupUser();
@@ -23,5 +28,11 @@ public class GroupUserService implements IGroupUserService {
             groupUser.setUser(user);
             groupUserRepository.save(groupUser);
         }
+    }
+
+    @Override
+    public void changeidReadMessage(long id, GroupUser groupUser) {
+        groupUser.setIdReadMessage(id);
+        groupUserRepository.save(groupUser);
     }
 }

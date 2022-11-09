@@ -1,9 +1,8 @@
 package com.example.backend.controller;
 
 import com.example.backend.model.Message;
-import com.example.backend.service.impl.GroupService;
-import com.example.backend.service.impl.MessageService;
-import com.example.backend.service.impl.UserService;
+import com.example.backend.model.MessageReact;
+import com.example.backend.service.impl.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,7 +21,12 @@ public class MessageController {
     @Autowired
     private UserService userService;
     @Autowired
+    private GroupUserService groupUserService;
+    @Autowired
+    private MessageReactService messageReactService;
+    @Autowired
     private MessageService messageService;
+
     @GetMapping("/get-message")
     public ResponseEntity<List<Message>> getMessage(@RequestParam Long idGroup
             , @RequestParam(name = "page", required = false, defaultValue = "0") Integer page) {
@@ -39,10 +43,22 @@ public class MessageController {
         return new ResponseEntity<Message>(HttpStatus.OK);
     }
 
-    @GetMapping("/change-status-message")
-    public ResponseEntity<Message> changeMessageStatus(@RequestParam Long idGroup, @RequestBody Message message) {
-        message.setGroup(groupService.findGroupById(idGroup));
-        messageService.saveMessage(message);
+    @GetMapping("/change-read-message")
+    public ResponseEntity<Message> changeReadMessage(@RequestParam long idGroupUser, @RequestParam long idReadMessage) {
+        groupUserService.changeidReadMessage(idReadMessage, groupUserService.findGroupUserById(idGroupUser));
         return new ResponseEntity<Message>(HttpStatus.OK);
     }
+
+//    @GetMapping("/send-react-message")
+//    public ResponseEntity<Message> sendReactMessage(@RequestParam long idMessage, @RequestParam long react, @RequestParam long idSender) {
+//        MessageReact messageReact = messageReactService.findMessageReactByIdSender(idSender, messageService.getMessageByIdMessage(idMessage));
+//        if (messageReact != null) {
+//            messageReact.setReact(react);
+//        } else {
+//            messageReact = new MessageReact();
+//            messageReactService.saveMessageReact(messageReact);
+//        }
+//        return new ResponseEntity<Message>(HttpStatus.OK);
+//    }
+
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Data
@@ -25,6 +26,9 @@ public class Message {
 
     @ManyToOne(targetEntity = Group.class)
     @JoinColumn(name = "id_group", nullable = false)
-    @JsonBackReference
+    @JsonBackReference(value = "message_group")
     private Group group;
+
+    @OneToMany(mappedBy = "message")
+    private List<MessageReact> messageReactList;
 }
