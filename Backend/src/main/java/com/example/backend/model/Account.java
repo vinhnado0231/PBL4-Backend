@@ -2,13 +2,14 @@ package com.example.backend.model;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Data
+@NoArgsConstructor
 @Table(name = "account")
 public class Account {
     @Id
@@ -22,7 +23,15 @@ public class Account {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "token")
+    private String token;
+
     @OneToOne(mappedBy = "account")
     @JsonBackReference
     private User user;
+
+    public Account(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
 }

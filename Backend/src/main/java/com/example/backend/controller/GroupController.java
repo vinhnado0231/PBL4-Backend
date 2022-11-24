@@ -47,4 +47,8 @@ public class GroupController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+//    @GetMapping("/get-all-group")
+//    public ResponseEntity<Object> getAllGroup(@RequestParam long idUser){
+//
+//    }
 }

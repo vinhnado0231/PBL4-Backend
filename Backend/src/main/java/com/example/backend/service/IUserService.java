@@ -1,7 +1,9 @@
 package com.example.backend.service;
 
+import com.example.backend.dto.UserCreateDTO;
 import com.example.backend.model.User;
 
 public interface IUserService {
-    public User getUserByIdUser(Long idUser);
+    User getUserByIdUser(Long idUser);
+    void createNewUser(UserCreateDTO userCreateDTO);
 }

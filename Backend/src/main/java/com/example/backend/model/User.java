@@ -19,22 +19,19 @@ public class User {
     private String nameUser;
 
     @Column(name = "address_user")
-    private String addressEmployee;
+    private String addressUser;
 
     @Column(name = "phone_user")
-    private String phoneEmployee;
+    private String phoneUser;
 
     @Column(name = "gender_user")
-    private boolean genderEmployee;
+    private boolean genderUser;
 
     @Column(name = "date_of_birth_user")
-    private String dateOfBirthEmployee;
+    private String dateOfBirthUser;
 
     @Column(name = "email_user")
-    private String emailEmployee;
-
-    @Column(name = "reset_password_token")
-    private String resetPasswordToken;
+    private String emailUser;
 
     @Column(name = "nickname")
     private String nickname;
@@ -42,14 +39,9 @@ public class User {
     @Column(name = "avatar")
     private String avatar;
 
-    //Them account cho user
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_account", referencedColumnName = "id_account")
     private Account account;
-
-    //Them group cho user
-//    @ManyToMany(mappedBy = "users")
-//    private Set<Group> groups;
 
     @OneToMany(mappedBy = "user")
     @JsonBackReference()
