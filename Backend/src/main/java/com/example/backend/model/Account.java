@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Data
@@ -26,9 +27,15 @@ public class Account {
     @Column(name = "token")
     private String token;
 
+    @Column(name = "status")
+    private boolean status;
+
     @OneToOne(mappedBy = "account")
     @JsonBackReference
     private User user;
+
+    @OneToMany(mappedBy = "account")
+    private List<LoginHistory> loginHistoryList;
 
     public Account(String username, String password) {
         this.username = username;

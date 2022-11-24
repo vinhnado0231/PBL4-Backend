@@ -17,4 +17,6 @@ public interface IAccountService {
     Account findAccountByEmail(String email);
 
     void saveAccount(Account account);
+
+    long getIdUserByUsername(String username);
 }

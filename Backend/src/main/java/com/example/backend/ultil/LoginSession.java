@@ -7,10 +7,8 @@ import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
-public class MessageSession {
+public class LoginSession {
     private long idUser;
-    private long idGroup;
-    private long idMessage;
+    private String token;
     private LocalDateTime time;
 }
-

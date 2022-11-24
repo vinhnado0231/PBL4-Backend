@@ -2,7 +2,7 @@ package com.example.backend.controller;
 
 import com.example.backend.model.Account;
 import com.example.backend.service.IAccountService;
-import com.example.backend.ultil.Token;
+import com.example.backend.ultil.ForgotPasswordToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +25,7 @@ public class AccountController {
     private IAccountService accountService;
     @Autowired
     private JavaMailSender mailSender;
-    public static Set<Token> tokenSet = new LinkedHashSet<>();
+    public static Set<ForgotPasswordToken> tokenForgotPasswordSet = new LinkedHashSet<>();
 
     @GetMapping("/forgot-password")
     public ResponseEntity<Object> processForgotPasswordForm(@RequestParam String email) {
@@ -55,16 +55,16 @@ public class AccountController {
         if (account == null) {
             message = "Token invaid";
         } else {
-            for (Token tokenCheck : tokenSet) {
+            for (ForgotPasswordToken tokenCheck : tokenForgotPasswordSet) {
                 if (tokenCheck.getToken().equals(token)) {
                     int diff = LocalDateTime.now().compareTo(tokenCheck.getTime());
                     if (diff >= 0) {
                         message = "Token is expired or invalid please try again";
-                        tokenSet.remove(tokenCheck);
+                        tokenForgotPasswordSet.remove(tokenCheck);
                     } else {
                         accountService.saveForgotPassword(account, password);
                         message = "Change password successfully";
-                        tokenSet.remove(tokenCheck);
+                        tokenForgotPasswordSet.remove(tokenCheck);
                     }
                 }
             }

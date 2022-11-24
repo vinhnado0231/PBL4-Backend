@@ -3,6 +3,8 @@ package com.example.backend.controller;
 import com.example.backend.model.Message;
 import com.example.backend.model.MessageReact;
 import com.example.backend.service.impl.*;
+import com.example.backend.ultil.LoginSession;
+import com.example.backend.ultil.MessageSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -11,7 +13,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/message")
@@ -26,6 +30,8 @@ public class MessageController {
     private MessageReactService messageReactService;
     @Autowired
     private MessageService messageService;
+
+    public static Set<MessageSession> messageSessionSet = new LinkedHashSet<>();
 
     @GetMapping("/get-message")
     public ResponseEntity<List<Message>> getMessage(@RequestParam Long idGroup

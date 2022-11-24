@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
-public class Token {
+public class ForgotPasswordToken {
     private String token;
     private LocalDateTime time;
 }

@@ -3,8 +3,9 @@ package com.example.backend.service.impl;
 import com.example.backend.controller.AccountController;
 import com.example.backend.model.Account;
 import com.example.backend.repository.IAccountRepository;
+import com.example.backend.repository.IUserRepository;
 import com.example.backend.service.IAccountService;
-import com.example.backend.ultil.Token;
+import com.example.backend.ultil.ForgotPasswordToken;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -23,6 +24,8 @@ import java.util.Set;
 public class AccountService implements IAccountService, UserDetailsService {
     @Autowired
     private IAccountRepository accountRepository;
+    @Autowired
+    private IUserRepository userRepository;
 
     @Override
     @Transactional
@@ -58,7 +61,7 @@ public class AccountService implements IAccountService, UserDetailsService {
         try {
             String token = RandomString.make(45);
             account.setToken(token);
-            AccountController.tokenSet.add(new Token(account.getToken(), LocalDateTime.now().plusMinutes(10)));
+            AccountController.tokenForgotPasswordSet.add(new ForgotPasswordToken(account.getToken(), LocalDateTime.now().plusMinutes(10)));
         } catch (Exception e) {
             updateToken(account);
             return;
@@ -79,5 +82,10 @@ public class AccountService implements IAccountService, UserDetailsService {
     @Override
     public void saveAccount(Account account) {
          accountRepository.save(account);
+    }
+
+    @Override
+    public long getIdUserByUsername(String username) {
+        return userRepository.findUserByAccount_Username(username).getIdUser();
     }
 }

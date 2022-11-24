@@ -1,8 +1,10 @@
 package com.example.backend.controller;
 
 import com.example.backend.dto.UserCreateDTO;
+import com.example.backend.model.Account;
 import com.example.backend.service.impl.AccountService;
 import com.example.backend.service.impl.UserService;
+import com.example.backend.ultil.EncrypPasswordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,14 +34,14 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-//    @GetMapping("/acc")
-//    public ResponseEntity<Object> createAccount(@RequestParam String emai) {
-//        Account account = new Account();
-//        account.setEmail("user");
-//        account.setPassword(EncrypPasswordUtils.EncrypPasswordUtils("123456"));
-//        accountService.saveAccount(account);
-//        return new ResponseEntity<>(HttpStatus.OK);
-//    }
+    @GetMapping("/acc")
+    public ResponseEntity<Object> createAccount() {
+        Account account = new Account();
+        account.setUsername("user");
+        account.setPassword(EncrypPasswordUtils.EncrypPasswordUtils("123456"));
+        accountService.saveAccount(account);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
     @PostMapping("/create-new-user")
     public ResponseEntity<Object> createUser(@RequestBody UserCreateDTO user) {
