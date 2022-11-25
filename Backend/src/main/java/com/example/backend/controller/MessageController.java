@@ -46,7 +46,7 @@ public class MessageController {
     public ResponseEntity<Message> sendMessage(@RequestParam Long idGroup, @RequestBody Message message) {
         message.setGroup(groupService.findGroupById(idGroup));
         messageService.saveMessage(message);
-        return new ResponseEntity<Message>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/change-read-message")

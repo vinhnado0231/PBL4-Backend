@@ -32,6 +32,10 @@ public class AccountController {
         String message = "";
         try {
             Account account = accountService.findAccountByEmail(email);
+            if (account == null) {
+                message = "Email not valid";
+                return new ResponseEntity<>(message, HttpStatus.OK);
+            }
             accountService.updateToken(account);
             String resetPasswordLink = "http://localhost:3000/home/change-password/" + account.getToken();
             sendEmail(email, resetPasswordLink);
@@ -56,15 +60,17 @@ public class AccountController {
             message = "Token invaid";
         } else {
             for (ForgotPasswordToken tokenCheck : tokenForgotPasswordSet) {
+                message = "Token is expired or invalid please try again";
                 if (tokenCheck.getToken().equals(token)) {
                     int diff = LocalDateTime.now().compareTo(tokenCheck.getTime());
                     if (diff >= 0) {
-                        message = "Token is expired or invalid please try again";
                         tokenForgotPasswordSet.remove(tokenCheck);
+                        break;
                     } else {
                         accountService.saveForgotPassword(account, password);
                         message = "Change password successfully";
                         tokenForgotPasswordSet.remove(tokenCheck);
+                        break;
                     }
                 }
             }

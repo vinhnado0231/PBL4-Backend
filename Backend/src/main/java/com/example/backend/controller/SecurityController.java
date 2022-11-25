@@ -31,7 +31,6 @@ public class SecurityController {
     private JwtUtility jwtUtility;
     @Autowired
     private AccountService accountService;
-
     public static Set<LoginSession> loginSessionSet = new LinkedHashSet<>();
 
     @PostMapping("/authenticate")
@@ -46,11 +45,11 @@ public class SecurityController {
     private void authenticate(String username, String password) throws Exception {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-//            creatLoginSession(username);
+            creatLoginSession(username);
         } catch (DisabledException e) {
-            throw new Exception("USER_DISABLED", e);
+            throw new Exception("USER_DISABLED",e);
         } catch (BadCredentialsException e) {
-            throw new Exception("INVALID_CREDENTIALS", e);
+            throw new Exception("INVALID_CREDENTIALS",e);
         }
     }
 
@@ -58,6 +57,7 @@ public class SecurityController {
         try{
             String token = RandomString.make(45);
             loginSessionSet.add(new LoginSession(accountService.getIdUserByUsername(username),token, LocalDateTime.now().plusMinutes(30)));
+            accountService.getAccountByUsername(username).setStatus(true);
         }catch (Exception e){
             creatLoginSession(username);
         }
