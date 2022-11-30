@@ -8,7 +8,6 @@ import javax.persistence.*;
 @Data
 @Table(name = "group_user")
 public class GroupUser {
-
     @EmbeddedId
     private GroupKey idGroupUser;
 
@@ -28,5 +27,5 @@ public class GroupUser {
     //roleGroup = 2 : Pho nhom : Co quyen them, xoa
     //roleGroup = 0 : Thanh vien nhom
     @Column(name = "role_group")
-    private Long roleGroup;
+    private int roleGroup;
 }

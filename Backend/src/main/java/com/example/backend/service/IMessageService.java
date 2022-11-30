@@ -1,5 +1,6 @@
 package com.example.backend.service;
 
+import com.example.backend.model.Group;
 import com.example.backend.model.Message;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,4 +11,5 @@ public interface IMessageService {
     public void saveMessage(Message message);
     public Message getMessageByIdMessage(Long idMessage);
     public void changeStatusMessage(Long idMessage);
+    public Message findLastMessage(Group group);
 }

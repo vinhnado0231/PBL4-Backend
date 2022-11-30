@@ -7,9 +7,12 @@ import com.example.backend.model.User;
 import java.util.List;
 
 public interface IGroupUserService {
-    GroupUser findGroupUserById(long id);
+    GroupUser findGroupUserByIdGroupUser(long id);
 
     void addUserToGroup(List<User> users, Group group);
 
     void changeidReadMessage(long id, GroupUser groupUser);
+
+    List<GroupUser> getAllGroupUserByIdUser(long idUser);
+
 }

@@ -1,5 +1,6 @@
 package com.example.backend.controller;
 
+import com.example.backend.dto.GroupDTO;
 import com.example.backend.model.Group;
 import com.example.backend.model.User;
 import com.example.backend.service.impl.GroupService;
@@ -24,11 +25,17 @@ public class GroupController {
     @Autowired
     private GroupUserService groupUserService;
 
+    @GetMapping("/get-all-group")
+    public ResponseEntity<ArrayList<GroupDTO>> getAllGroupByIdUser(@RequestParam Long idUser) {
+        ArrayList<GroupDTO> groups = groupService.findGroupByIdUser(idUser);
+        return new ResponseEntity<>(groups, HttpStatus.OK);
+    }
+
     @PostMapping("/create-group")
-    public ResponseEntity<Group> sendMessage(@RequestBody List<Long> idUserList) {
+    public ResponseEntity<Group> createGroup(@RequestBody List<Long> idUserList) {
         Group group = new Group();
         groupService.saveGroup(group);
-        List<User> users = new ArrayList<User>();
+        List<User> users = new ArrayList<>();
         for (Long id : idUserList) {
             users.add(userService.getUserByIdUser(id));
         }
@@ -39,7 +46,7 @@ public class GroupController {
     @PostMapping("/add-user-to-group")
     public ResponseEntity<Group> sendMessagse(@RequestBody List<Long> idUserList, @RequestParam Long idGroup) {
         Group group = groupService.findGroupById(idGroup);
-        List<User> users = new ArrayList<User>();
+        List<User> users = new ArrayList<>();
         for (Long id : idUserList) {
             users.add(userService.getUserByIdUser(id));
         }

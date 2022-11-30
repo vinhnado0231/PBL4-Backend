@@ -17,6 +17,9 @@ public class Group {
     @Column(name = "is_single")
     private boolean isSingle;
 
+    @Column(name = "name_group")
+    private String nameGroup;
+
     @OneToMany(mappedBy = "group")
     private List<Message> messageList;
 }

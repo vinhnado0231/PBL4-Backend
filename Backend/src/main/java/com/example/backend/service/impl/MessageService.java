@@ -1,5 +1,6 @@
 package com.example.backend.service.impl;
 
+import com.example.backend.model.Group;
 import com.example.backend.model.Message;
 import com.example.backend.repository.IMessageRepository;
 import com.example.backend.service.IMessageService;
@@ -32,5 +33,10 @@ public class MessageService implements IMessageService {
     @Override
     public void changeStatusMessage(Long idMessage) {
 
+    }
+
+    @Override
+    public Message findLastMessage(Group group) {
+        return messageRepository.findTopByGroupOrderByIdMessageDesc(group);
     }
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -15,11 +16,14 @@ public class Message {
     @Column(name = "id_message")
     private long idMessage;
 
-    @Column(name="id_sender")
+    @Column(name = "id_sender")
     private long idSender;
 
     @Column(name = "is_text")
     private boolean isText;
+
+    @Column(name = "time")
+    private LocalDateTime time;
 
     @Column(name = "message")
     private String message;

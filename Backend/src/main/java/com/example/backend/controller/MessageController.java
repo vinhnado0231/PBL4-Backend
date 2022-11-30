@@ -1,9 +1,12 @@
 package com.example.backend.controller;
 
+import com.example.backend.dto.GroupDTO;
+import com.example.backend.model.GroupUser;
 import com.example.backend.model.Message;
-import com.example.backend.model.MessageReact;
+import com.example.backend.repository.IGroupUserRepository;
+import com.example.backend.repository.IMessageRepository;
+import com.example.backend.service.IGroupUserService;
 import com.example.backend.service.impl.*;
-import com.example.backend.ultil.LoginSession;
 import com.example.backend.ultil.MessageSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -13,6 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -45,17 +50,18 @@ public class MessageController {
     @PostMapping("/send-message")
     public ResponseEntity<Message> sendMessage(@RequestParam Long idGroup, @RequestBody Message message) {
         message.setGroup(groupService.findGroupById(idGroup));
+        message.setTime(LocalDateTime.now());
         messageService.saveMessage(message);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/change-read-message")
     public ResponseEntity<Message> changeReadMessage(@RequestParam long idGroupUser, @RequestParam long idReadMessage) {
-        groupUserService.changeidReadMessage(idReadMessage, groupUserService.findGroupUserById(idGroupUser));
+        groupUserService.changeidReadMessage(idReadMessage, groupUserService.findGroupUserByIdGroupUser(idGroupUser));
         return new ResponseEntity<Message>(HttpStatus.OK);
     }
 
-//    @GetMapping("/send-react-message")
+    //    @GetMapping("/send-react-message")
 //    public ResponseEntity<Message> sendReactMessage(@RequestParam long idMessage, @RequestParam long react, @RequestParam long idSender) {
 //        MessageReact messageReact = messageReactService.findMessageReactByIdSender(idSender, messageService.getMessageByIdMessage(idMessage));
 //        if (messageReact != null) {
@@ -66,5 +72,7 @@ public class MessageController {
 //        }
 //        return new ResponseEntity<Message>(HttpStatus.OK);
 //    }
+//    @Autowired
+//    IGroupUserService groupUserService;
 
 }
