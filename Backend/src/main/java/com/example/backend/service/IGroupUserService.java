@@ -13,6 +13,8 @@ public interface IGroupUserService {
 
     void changeidReadMessage(long id, GroupUser groupUser);
 
-    List<GroupUser> getAllGroupUserByIdUser(long idUser);
+    GroupUser getGroupUserByIdUserIdGroup(long idUser, long idGroup);
+
+    List<GroupUser> getAllByIdUser(long idUser);
 
 }

@@ -1,11 +1,6 @@
 package com.example.backend.controller;
 
-import com.example.backend.dto.GroupDTO;
-import com.example.backend.model.GroupUser;
 import com.example.backend.model.Message;
-import com.example.backend.repository.IGroupUserRepository;
-import com.example.backend.repository.IMessageRepository;
-import com.example.backend.service.IGroupUserService;
 import com.example.backend.service.impl.*;
 import com.example.backend.ultil.MessageSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +9,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -40,19 +35,25 @@ public class MessageController {
 
     @GetMapping("/get-message")
     public ResponseEntity<List<Message>> getMessage(@RequestParam Long idGroup
-            , @RequestParam(name = "page", required = false, defaultValue = "0") Integer page) {
-        Pageable pageable = PageRequest.of(page, 10);
-        Slice<Message> messageSlice = messageService.getAllMessageByIdGroup(idGroup, pageable);
-        List<Message> messages = messageSlice.getContent();
-        return new ResponseEntity<List<Message>>(messages, HttpStatus.OK);
+            , @RequestParam(name = "page", required = false, defaultValue = "0") Integer page, Authentication authentication) {
+        if (groupService.chekUserInGroup(authentication.getName(), idGroup)) {
+            Pageable pageable = PageRequest.of(page, 20);
+            Slice<Message> messageSlice = messageService.getAllMessageByIdGroup(idGroup, pageable);
+            List<Message> messages = messageSlice.getContent();
+            return new ResponseEntity<>(messages, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
     }
 
     @PostMapping("/send-message")
-    public ResponseEntity<Message> sendMessage(@RequestParam Long idGroup, @RequestBody Message message) {
-        message.setGroup(groupService.findGroupById(idGroup));
-        message.setTime(LocalDateTime.now());
-        messageService.saveMessage(message);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<Message> sendMessage(@RequestParam Long idGroup, @RequestBody Message message, Authentication authentication) {
+        if (groupService.chekUserInGroup(authentication.getName(), idGroup)) {
+            message.setGroup(groupService.findGroupById(idGroup));
+            message.setTime(LocalDateTime.now());
+            messageService.saveMessage(message);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
     }
 
     @GetMapping("/change-read-message")
@@ -74,5 +75,8 @@ public class MessageController {
 //    }
 //    @Autowired
 //    IGroupUserService groupUserService;
-
+//    @GetMapping("/change-read-message")
+//    public ResponseEntity<Message> changeReadMessagej(@RequestParam long idGroupUser, @RequestParam long idReadMessage) {
+//
+//    }
 }

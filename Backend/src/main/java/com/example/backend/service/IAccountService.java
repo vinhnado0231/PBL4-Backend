@@ -19,4 +19,5 @@ public interface IAccountService {
     void saveAccount(Account account);
 
     long getIdUserByUsername(String username);
+
 }
