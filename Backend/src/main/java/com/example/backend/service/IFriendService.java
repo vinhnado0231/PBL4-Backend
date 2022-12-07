@@ -11,5 +11,6 @@ public interface IFriendService {
     void updateFriend(Friend friend);
 
     List<Friend> getAllFriendByIdUser(long idUser);
-//    List<Friend> getAllFri
+
+    List<Friend> getAllFriendRequestByIdUser(long idUser);
 }

@@ -51,7 +51,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
+        http.cors().and().csrf().disable()
                 // dont authenticate this particular request
                 .authorizeRequests().antMatchers("/authenticate",
                         "/api/user/create-new-user",
