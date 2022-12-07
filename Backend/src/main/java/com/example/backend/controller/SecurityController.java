@@ -4,7 +4,6 @@ import com.example.backend.model.Account;
 import com.example.backend.payload.JwtResponse;
 import com.example.backend.payload.LoginRequest;
 import com.example.backend.service.impl.AccountService;
-import com.example.backend.ultil.ForgotPasswordToken;
 import com.example.backend.ultil.JwtUtility;
 import com.example.backend.ultil.LoginSession;
 import net.bytebuddy.utility.RandomString;
