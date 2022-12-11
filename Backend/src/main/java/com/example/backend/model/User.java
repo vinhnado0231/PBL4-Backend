@@ -36,6 +36,9 @@ public class User {
     @Column(name = "nickname")
     private String nickname;
 
+    @Column(name = "home_town")
+    private String homeTownUser;
+
     @Column(name = "avatar")
     private String avatar;
 
