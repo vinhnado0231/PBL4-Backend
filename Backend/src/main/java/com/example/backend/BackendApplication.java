@@ -18,26 +18,6 @@ public class BackendApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(BackendApplication.class, args);
-        doSomeThing();
-    }
-    @Autowired
-    private static IAccountRepository accountRepository;
-    @Autowired
-    private static IUserRepository userRepository;
-    @Autowired
-    private static IUserFavoriteRepository userFavoriteRepository;
-
-    public static void doSomeThing(){
-        //Doc fle
-
-        Account account = new Account("username", "password");
-
-        UserFavorite userFavorite = new UserFavorite(1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f);
-
-        User user = new User();
-        user.setAccount(account);
-        user.setUserFavorite(userFavorite);
-        userRepository.save(user);
     }
 
 }

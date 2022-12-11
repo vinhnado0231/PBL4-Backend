@@ -29,6 +29,8 @@ public class UserFavorite {
     private Float ngu;
     private Float mua_sam;
     private Float nuoi_thu;
+
+    private Float di_bo;
     private Float trang_diem;
     private Float nau_an;
 
@@ -36,7 +38,7 @@ public class UserFavorite {
     @JsonBackReference
     private User user;
 
-    public UserFavorite(Float an_uong, Float xem_phim, Float doc_sach, Float the_thao, Float ca_nhac, Float du_lich, Float coffee, Float choi_game, Float code, Float hoi_hoa, Float hoc, Float ngu, Float mua_sam, Float nuoi_thu, Float trang_diem, Float nau_an) {
+    public UserFavorite(Float an_uong, Float xem_phim, Float doc_sach, Float the_thao, Float ca_nhac, Float du_lich, Float coffee, Float choi_game, Float code, Float hoi_hoa, Float hoc, Float ngu, Float mua_sam, Float nuoi_thu, Float di_bo, Float trang_diem, Float nau_an) {
         this.an_uong = an_uong;
         this.xem_phim = xem_phim;
         this.doc_sach = doc_sach;
@@ -51,6 +53,7 @@ public class UserFavorite {
         this.ngu = ngu;
         this.mua_sam = mua_sam;
         this.nuoi_thu = nuoi_thu;
+        this.di_bo = di_bo;
         this.trang_diem = trang_diem;
         this.nau_an = nau_an;
     }
