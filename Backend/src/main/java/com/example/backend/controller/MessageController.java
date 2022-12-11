@@ -31,8 +31,11 @@ public class MessageController {
     private MessageReactService messageReactService;
     @Autowired
     private MessageService messageService;
+    @Autowired
+    private AccountService accountService;
 
     public static Set<MessageSession> messageSessionSet = new LinkedHashSet<>();
+
 
     @GetMapping("/get-message")
     public ResponseEntity<List<Message>> getMessage(@RequestParam Long idGroup
@@ -50,6 +53,7 @@ public class MessageController {
     public ResponseEntity<Message> sendMessage(@RequestParam Long idGroup, @RequestBody Message message, Authentication authentication) {
         if (groupService.chekUserInGroup(authentication.getName(), idGroup)) {
             message.setGroup(groupService.findGroupById(idGroup));
+            message.setIdSender(accountService.getIdUserByUsername(authentication.getName()));
             message.setTime(LocalDateTime.now());
             messageService.saveMessage(message);
             return new ResponseEntity<>(HttpStatus.OK);
@@ -57,11 +61,11 @@ public class MessageController {
         return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
     }
 
-    @GetMapping("/change-read-message")
-    public ResponseEntity<Message> changeReadMessage(@RequestParam long idGroupUser, @RequestParam long idReadMessage) {
-        groupUserService.changeidReadMessage(idReadMessage, groupUserService.findGroupUserByIdGroupUser(idGroupUser));
-        return new ResponseEntity<Message>(HttpStatus.OK);
-    }
+//    @GetMapping("/change-read-message")
+//    public ResponseEntity<> changeReadMessage(@RequestParam long idGroup, @RequestParam long idReadMessage, Authentication authentication) {
+//        groupUserService.changeidReadMessage(idReadMessage, idGroup, accountService.getIdUserByUsername(authentication.getName()));
+//        return new ResponseEntity<>(HttpStatus.OK);
+//    }
 
     //    @GetMapping("/send-react-message")
 //    public ResponseEntity<Message> sendReactMessage(@RequestParam long idMessage, @RequestParam long react, @RequestParam long idSender) {

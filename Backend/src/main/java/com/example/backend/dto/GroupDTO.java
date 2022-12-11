@@ -15,7 +15,7 @@ public class GroupDTO {
     public Long idMessage;
     public String message;
     public LocalDateTime time;
-    public boolean isText;
+    public Integer type;
     public Long idSender;
     public String nameSender;
     public long idLastMessage;

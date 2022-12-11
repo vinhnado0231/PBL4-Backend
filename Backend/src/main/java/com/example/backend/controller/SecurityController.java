@@ -46,7 +46,7 @@ public class SecurityController {
     private void authenticate(String username, String password) throws Exception {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-            creatLoginSession(username);
+//            creatLoginSession(username);
         } catch (DisabledException e) {
             throw new Exception("USER_DISABLED",e);
         } catch (BadCredentialsException e) {

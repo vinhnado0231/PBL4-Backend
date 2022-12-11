@@ -11,7 +11,7 @@ public interface IGroupUserService {
 
     void addUserToGroup(List<User> users, Group group);
 
-    void changeidReadMessage(long id, GroupUser groupUser);
+//    void changeidReadMessage(long idReadMessage,long idGroup,long idUser);
 
     GroupUser getGroupUserByIdUserIdGroup(long idUser, long idGroup);
 

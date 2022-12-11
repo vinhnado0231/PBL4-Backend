@@ -52,8 +52,8 @@ public class AccountController {
     }
 
     @PostMapping("/change-password")
-    public ResponseEntity<Object> processResetPassword(@RequestParam(value = "token") String token,
-                                                       @RequestParam(value = "password") String password) {
+    public ResponseEntity<Object> processResetPassword(@RequestBody String token,
+                                                       @RequestBody String password) {
         String message = "OK";
         Account account = accountService.findAccountByToken(token);
         if (account == null) {

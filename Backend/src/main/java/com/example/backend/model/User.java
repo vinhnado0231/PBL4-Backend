@@ -47,4 +47,8 @@ public class User {
     @JsonBackReference()
     private Set<Friend> friends;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_user_favorite", referencedColumnName = "id_user_favorite")
+    private UserFavorite userFavorite;
+
 }

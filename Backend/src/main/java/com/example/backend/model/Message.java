@@ -19,13 +19,14 @@ public class Message {
     @Column(name = "id_sender")
     private long idSender;
 
-    @Column(name = "is_text")
-    private boolean isText;
+    @Column(name = "type")
+    private int type;
 
     @Column(name = "time")
     private LocalDateTime time;
 
-    @Column(name = "message")
+    @Lob
+    @Column(name = "message",length = 100000000)
     private String message;
 
     @ManyToOne(targetEntity = Group.class)

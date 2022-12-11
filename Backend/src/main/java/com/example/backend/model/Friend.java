@@ -1,5 +1,6 @@
 package com.example.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -21,5 +22,6 @@ public class Friend {
 
     @ManyToOne(targetEntity = User.class)
     @JoinColumn(name = "id_user", nullable = false)
+    @JsonBackReference
     private User user;
 }

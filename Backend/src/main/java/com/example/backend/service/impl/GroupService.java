@@ -47,13 +47,13 @@ public class GroupService implements IGroupService {
             message = messageService.findLastMessage(group);
             if (message == null) {
                 groupDTO = new GroupDTO(group.getIdGroup(), group.getNameGroup(), group.isSingle(), groupUser.getRoleGroup(),
-                        null, null, null, false, null, null,
+                        null, null, null, null, null, null,
                         0);
                 groupDTOS.add(groupDTO);
                 break;
             }
             groupDTO = new GroupDTO(group.getIdGroup(), group.getNameGroup(), group.isSingle(), groupUser.getRoleGroup(),
-                    message.getIdMessage(), message.getMessage(), message.getTime(), message.isText(), message.getIdSender(),
+                    message.getIdMessage(), message.getMessage(), message.getTime(), message.getType(), message.getIdSender(),
                     userService.getUserByIdUser(message.getIdSender()).getNameUser(),
                     groupUser.getIdReadMessage());
             groupDTOS.add(groupDTO);

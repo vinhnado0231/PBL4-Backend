@@ -35,14 +35,14 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/acc")
-    public ResponseEntity<Object> createAccount() {
-        Account account = new Account();
-        account.setUsername("user");
-        account.setPassword(EncrypPasswordUtils.EncrypPasswordUtils("123456"));
-        accountService.saveAccount(account);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+//    @GetMapping("/acc")
+//    public ResponseEntity<Object> createAccount() {
+//        Account account = new Account();
+//        account.setUsername("user6");
+//        account.setPassword(EncrypPasswordUtils.EncrypPasswordUtils("123456"));
+//        accountService.saveAccount(account);
+//        return new ResponseEntity<>(HttpStatus.OK);
+//    }
 
     @PostMapping("/create-new-user")
     public ResponseEntity<Object> createUser(@RequestBody UserCreateDTO user) {
