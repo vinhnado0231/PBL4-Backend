@@ -13,4 +13,5 @@ public interface IGroupService {
     ArrayList<GroupDTO> findGroupByIdUser(long idUser);
 
     boolean chekUserInGroup(String username, long idGroup);
+
 }
