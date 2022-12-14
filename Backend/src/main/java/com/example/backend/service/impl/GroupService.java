@@ -57,8 +57,8 @@ public class GroupService implements IGroupService {
                         message.getIdMessage(), message.getMessage(), message.getTime(), message.getType(), message.getIdSender(),
                         userService.getUserByIdUser(message.getIdSender()).getNameUser(),
                         groupUser.getIdReadMessage());
+                groupDTOS.add(groupDTO);
                 continue;
-
             }
             groupDTO = new GroupDTO(group.getIdGroup(), group.getNameGroup(), group.isSingle(), groupUser.getRoleGroup(),
                     message.getIdMessage(), null, message.getTime(), message.getType(), message.getIdSender(),
