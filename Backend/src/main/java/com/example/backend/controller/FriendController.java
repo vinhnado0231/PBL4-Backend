@@ -1,5 +1,6 @@
 package com.example.backend.controller;
 
+import com.example.backend.dto.FriendStatusDTO;
 import com.example.backend.model.Friend;
 import com.example.backend.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,10 +78,17 @@ public class FriendController {
         List<Friend> friends = friendService.getAllFriendRequestByIdUser(idUser);
         return new ResponseEntity<>(friends, HttpStatus.OK);
     }
+
     @GetMapping("/search-friend")
-    public ResponseEntity<List<Friend>> searchFriend(String search,Authentication authentication) {
+    public ResponseEntity<List<Friend>> searchFriend(String search, Authentication authentication) {
         long idUser = accountService.getIdUserByUsername(authentication.getName());
-        List<Friend> friends = friendService.getAllFriendRequestByIdUser(idUser);
+        List<Friend> friends = friendService.searchFriend(idUser,search);
         return new ResponseEntity<>(friends, HttpStatus.OK);
     }
+
+//    @GetMapping("/get-status-friend")
+//    public ResponseEntity<List<Friend>> getStatusFriend(Authentication authentication) {
+//        List<FriendStatusDTO> friends;
+//        return new ResponseEntity<>(friends, HttpStatus.OK);
+//    }
 }

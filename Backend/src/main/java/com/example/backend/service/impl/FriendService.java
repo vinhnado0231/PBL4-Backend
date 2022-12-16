@@ -1,5 +1,6 @@
 package com.example.backend.service.impl;
 
+import com.example.backend.dto.FriendStatusDTO;
 import com.example.backend.model.Friend;
 import com.example.backend.model.User;
 import com.example.backend.repository.IFriendRepository;
@@ -7,6 +8,7 @@ import com.example.backend.service.IFriendService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -46,5 +48,17 @@ public class FriendService implements IFriendService {
     @Override
     public void deleteFriend(Friend friend) {
         friendRepository.delete(friend);
+    }
+
+    @Override
+    public List<Friend> searchFriend(long idUser, String search) {
+        return  friendRepository.searchFriend(idUser,search);
+    }
+
+    @Override
+    public List<FriendStatusDTO> getStatusFriend(long idUserByUsername) {
+        List<FriendStatusDTO> friendStatusDTOList = new ArrayList<>();
+
+        return friendStatusDTOList;
     }
 }

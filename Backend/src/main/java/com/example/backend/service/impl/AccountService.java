@@ -6,6 +6,7 @@ import com.example.backend.repository.IAccountRepository;
 import com.example.backend.repository.IUserRepository;
 import com.example.backend.service.IAccountService;
 import com.example.backend.ultil.ForgotPasswordToken;
+import com.example.backend.ultil.ScheduledTasks;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -61,7 +62,7 @@ public class AccountService implements IAccountService, UserDetailsService {
         try {
             String token = RandomString.make(45);
             account.setToken(token);
-            AccountController.tokenForgotPasswordSet.add(new ForgotPasswordToken(account.getToken(), LocalDateTime.now().plusMinutes(10)));
+            ScheduledTasks.tokenForgotPasswordSet.add(new ForgotPasswordToken(account.getToken(), LocalDateTime.now().plusMinutes(10)));
         } catch (Exception e) {
             updateToken(account);
             return;
@@ -88,4 +89,12 @@ public class AccountService implements IAccountService, UserDetailsService {
     public long getIdUserByUsername(String username) {
         return userRepository.findUserByAccount_Username(username).getIdUser();
     }
+
+    @Override
+    public void changeTimeOff(Account account) {
+        account.setTimeOff(LocalDateTime.now().toString());
+        saveAccount(account);
+    }
+
+
 }

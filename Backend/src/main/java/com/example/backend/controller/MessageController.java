@@ -2,7 +2,6 @@ package com.example.backend.controller;
 
 import com.example.backend.model.Message;
 import com.example.backend.service.impl.*;
-import com.example.backend.ultil.MessageSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -34,8 +33,6 @@ public class MessageController {
     @Autowired
     private AccountService accountService;
 
-    public static Set<MessageSession> messageSessionSet = new LinkedHashSet<>();
-
     @GetMapping("/get-message")
     public ResponseEntity<List<Message>> getMessage(@RequestParam Long idGroup
             , @RequestParam(name = "page", required = false, defaultValue = "0") Integer page, Authentication authentication) {
@@ -60,11 +57,11 @@ public class MessageController {
         return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
     }
 
-//    @GetMapping("/change-read-message")
-//    public ResponseEntity<> changeReadMessage(@RequestParam long idGroup, @RequestParam long idReadMessage, Authentication authentication) {
-//        groupUserService.changeidReadMessage(idReadMessage, idGroup, accountService.getIdUserByUsername(authentication.getName()));
-//        return new ResponseEntity<>(HttpStatus.OK);
-//    }
+    @GetMapping("/change-read-message")
+    public ResponseEntity<Object> changeReadMessage(@RequestParam long idGroup, @RequestParam long idReadMessage, Authentication authentication) {
+        groupUserService.changeidReadMessage(idReadMessage, idGroup, accountService.getIdUserByUsername(authentication.getName()));
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
     //    @GetMapping("/send-react-message")
 //    public ResponseEntity<Message> sendReactMessage(@RequestParam long idMessage, @RequestParam long react, @RequestParam long idSender) {
@@ -76,11 +73,5 @@ public class MessageController {
 //            messageReactService.saveMessageReact(messageReact);
 //        }
 //        return new ResponseEntity<Message>(HttpStatus.OK);
-//    }
-//    @Autowired
-//    IGroupUserService groupUserService;
-//    @GetMapping("/change-read-message")
-//    public ResponseEntity<Message> changeReadMessagej(@RequestParam long idGroupUser, @RequestParam long idReadMessage) {
-//
 //    }
 }
