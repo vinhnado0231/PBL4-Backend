@@ -24,19 +24,14 @@ public class UserFavorite {
     private Float coffee;
     private Float choi_game;
     private Float code;
-    private Float hoi_hoa;
-    private Float hoc;
-    private Float ngu;
-    private Float mua_sam;
-    private Float nuoi_thu;
-    private Float trang_diem;
     private Float nau_an;
 
     @OneToOne(mappedBy = "userFavorite")
-    @JsonBackReference
+        @JsonBackReference
     private User user;
 
-    public UserFavorite(Float an_uong, Float xem_phim, Float doc_sach, Float the_thao, Float ca_nhac, Float du_lich, Float coffee, Float choi_game, Float code, Float hoi_hoa, Float hoc, Float ngu, Float mua_sam, Float nuoi_thu, Float trang_diem, Float nau_an) {
+    public UserFavorite(long idUserFavorite, Float an_uong, Float xem_phim, Float doc_sach, Float the_thao, Float ca_nhac, Float du_lich, Float coffee, Float choi_game, Float code, Float nau_an, User user) {
+        this.idUserFavorite = idUserFavorite;
         this.an_uong = an_uong;
         this.xem_phim = xem_phim;
         this.doc_sach = doc_sach;
@@ -46,13 +41,8 @@ public class UserFavorite {
         this.coffee = coffee;
         this.choi_game = choi_game;
         this.code = code;
-        this.hoi_hoa = hoi_hoa;
-        this.hoc = hoc;
-        this.ngu = ngu;
-        this.mua_sam = mua_sam;
-        this.nuoi_thu = nuoi_thu;
-        this.trang_diem = trang_diem;
         this.nau_an = nau_an;
+        this.user = user;
     }
 }
 
