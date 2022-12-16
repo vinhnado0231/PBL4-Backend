@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserDTO {
     private long idUser;
-    private String nameUser;
     private boolean genderUser;
     private String dateOfBirthUser;
     private String homeTownUser;
+    private String addressUser;
     private Float an_uong = 2.5f;
     private Float xem_phim = 2.5f;
     private Float doc_sach = 2.5f;

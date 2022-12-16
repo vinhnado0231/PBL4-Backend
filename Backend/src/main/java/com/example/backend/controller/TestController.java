@@ -20,6 +20,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
+import java.util.logging.Logger;
 
 @Controller
 public class TestController {
@@ -27,6 +28,15 @@ public class TestController {
     private UserService userService;
     @Autowired
     private AccountService accountService;
+
+    @Autowired
+    private IAccountRepository accountRepository;
+    @Autowired
+    private IUserRepository userRepository;
+    @Autowired
+    private IUserFavoriteRepository userFavoriteRepository;
+
+
     public static Vector<String> initListHobbies(Vector<String> listHB){
         listHB.add("Ăn uống");
         listHB.add("Ca hát");
@@ -217,45 +227,106 @@ public class TestController {
     }
     @GetMapping("/test")
     public ResponseEntity<Object> checkUsername()  {
-        LinkedList<UserDTO> users1 = userService.getAllUserDTO();
-        LinkedList<UserDTO> users=new LinkedList<>();
-        for(int i=0;i<50;i++){
-            users.add(users1.get(i));
-        }
-        Vector<String> hobbies =new Vector<>();
-        hobbies = initListHobbies(hobbies);
-        double originalMatrix[][] = new double[hobbies.size()+1][users.size()+1]; // ma trận ban đầu
-        double normalizedMatrix[][] = new double[hobbies.size()+1][users.size()+1]; // ma trận sau khi chuẩn hóa
-        double userSimilarityMatrix[][]=new double[users.size()+1][users.size()+1];// ma trận thể hiện sự giống nhau giữa các user
-        int numHobbies=hobbies.size();
-        int numUser=users.size();
-        initOriginalMatrix(originalMatrix,numHobbies,numUser,users);
-        for(int i=0;i<numHobbies;i++){
-            for(int j=0;j<numUser;j++){
-                normalizedMatrix[i][j]=originalMatrix[i][j];
-            }
-        }
-        normalizedMatrix(normalizedMatrix,numHobbies,numUser);
-        for(int i=0;i<numHobbies;i++){
-            for(int j=0;j<numUser;j++){
-                System.out.print(normalizedMatrix[i][j]+" ");
-            }
-            System.out.println(" ");
-        }
-        System.out.println("USER SIMILARITY");
-        userSimilarity(normalizedMatrix,numHobbies,numUser,userSimilarityMatrix);
-        for(int i=0;i<numUser;i++){
-            for(int j=0;j<numUser;j++){
-                System.out.print(userSimilarityMatrix[i][j]+ " ");
-            }
-            System.out.println("");
-        }
-//        for (int i=0;i<listSoThich.size();i++ ) {
-//            System.out.println(listSoThich.get(i));
+//        LinkedList<UserDTO> users1 = userService.getAllUserDTO();
+//        LinkedList<UserDTO> users=new LinkedList<>();
+//        for(int i=0;i<50;i++){
+//            users.add(users1.get(i));
 //        }
-        System.out.println("TEST");
-        ratingUI(userSimilarityMatrix,normalizedMatrix,numUser,numHobbies,0,0);
+//        Vector<String> hobbies =new Vector<>();
+//        hobbies = initListHobbies(hobbies);
+//        double originalMatrix[][] = new double[hobbies.size()+1][users.size()+1]; // ma trận ban đầu
+//        double normalizedMatrix[][] = new double[hobbies.size()+1][users.size()+1]; // ma trận sau khi chuẩn hóa
+//        double userSimilarityMatrix[][]=new double[users.size()+1][users.size()+1];// ma trận thể hiện sự giống nhau giữa các user
+//        int numHobbies=hobbies.size();
+//        int numUser=users.size();
+//        initOriginalMatrix(originalMatrix,numHobbies,numUser,users);
+//        for(int i=0;i<numHobbies;i++){
+//            for(int j=0;j<numUser;j++){
+//                normalizedMatrix[i][j]=originalMatrix[i][j];
+//            }
+//        }
+//        normalizedMatrix(normalizedMatrix,numHobbies,numUser);
+//        for(int i=0;i<numHobbies;i++){
+//            for(int j=0;j<numUser;j++){
+//                System.out.print(normalizedMatrix[i][j]+" ");
+//            }
+//            System.out.println(" ");
+//        }
+//        System.out.println("USER SIMILARITY");
+//        userSimilarity(normalizedMatrix,numHobbies,numUser,userSimilarityMatrix);
+//        for(int i=0;i<numUser;i++){
+//            for(int j=0;j<numUser;j++){
+//                System.out.print(userSimilarityMatrix[i][j]+ " ");
+//            }
+//            System.out.println("");
+//        }
+////        for (int i=0;i<listSoThich.size();i++ ) {
+////            System.out.println(listSoThich.get(i));
+////        }
+//        System.out.println("TEST");
+//        ratingUI(userSimilarityMatrix,normalizedMatrix,numUser,numHobbies,0,0);
+
+
+
+
+
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
+    @GetMapping("/test1")
+    public ResponseEntity<Object> Ok() throws FileNotFoundException  {
+        String url = "E:\\data.txt";
+        // Đọc dữ liệu từ File với Scanner
+        FileInputStream fileInputStream = new FileInputStream(url);
+        Scanner scanner = new Scanner(fileInputStream);
+        try {
+            while (scanner.hasNextLine()) {
+                String line =scanner.nextLine();
+                String[] words = line.split("/");
+                User user = new User();
+                user.setNameUser(words[0]);
+                user.setDateOfBirthUser(words[1]);
+                user.setAddressUser(words[2]);
+                user.setHomeTownUser(words[3]);
+                user.setGenderUser(Boolean.parseBoolean(words[4]));
+                UserFavorite userFavorite = new UserFavorite();
 
+            }
+        } finally {
+            try {
+                scanner.close();
+                fileInputStream.close();
+            } catch (IOException ex) {
+
+            }
+        }
+        for(int i=0;i<100;i++){
+
+//
+//            userFavorite.setAn_uong(5.0f);
+//            userFavorite.setCode();
+//            userFavorite.setAn_uong();
+//            userFavorite.setXem_phim();
+//            userFavorite.setDoc_sach();
+//            userFavorite.setThe_thao();
+//            userFavorite.setCa_nhac();
+//            userFavorite.setDu_lich();
+//            userFavorite.setCoffee();
+//            userFavorite.setChoi_game();
+//            userFavorite.setHoi_hoa();
+//            userFavorite.setHoc();
+//            userFavorite.setNgu();
+//            userFavorite.setMua_sam();
+//            userFavorite.setNuoi_thu();
+//            userFavorite.setMua_sam());
+//            userFavorite.setNau_an();
+//
+//            user.setUserFavorite(userFavorite);
+//            userRepository.save(user);
+        }
+
+
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

@@ -45,8 +45,8 @@ public class UserService implements IUserService {
                 userDTO.setIdUser(user.getIdUser());
                 userDTO.setGenderUser(user.isGenderUser());
                 userDTO.setDateOfBirthUser(user.getDateOfBirthUser());
-                userDTO.setNameUser(user.getNameUser());
-                user.setHomeTownUser(user.getHomeTownUser());
+                userDTO.setHomeTownUser(user.getHomeTownUser());
+                userDTO.setAddressUser(user.getAddressUser());
                 userDTO.setCode(user.getUserFavorite().getCode());
                 userDTO.setAn_uong(user.getUserFavorite().getAn_uong());
                 userDTO.setXem_phim(user.getUserFavorite().getXem_phim());
