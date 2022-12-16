@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -29,6 +30,12 @@ public class Account {
 
     @Column(name = "status")
     private boolean status;
+
+    @Column(name = "loginToken")
+    private String loginToken;
+
+    @Column(name = "time_off")
+    private String timeOff;
 
     @OneToOne(mappedBy = "account")
     @JsonBackReference

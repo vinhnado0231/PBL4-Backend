@@ -17,6 +17,8 @@ import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import static com.example.backend.ultil.ScheduledTasks.tokenForgotPasswordSet;
+
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/api/account")
@@ -25,7 +27,6 @@ public class AccountController {
     private IAccountService accountService;
     @Autowired
     private JavaMailSender mailSender;
-    public static Set<ForgotPasswordToken> tokenForgotPasswordSet = new LinkedHashSet<>();
 
     @GetMapping("/forgot-password")
     public ResponseEntity<Object> processForgotPasswordForm(@RequestParam String email) {

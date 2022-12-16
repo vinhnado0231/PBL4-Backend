@@ -39,7 +39,8 @@ public class User {
     @Column(name = "home_town")
     private String homeTownUser;
 
-    @Column(name = "avatar")
+    @Lob
+    @Column(name = "avatar",length = 1000000)
     private String avatar;
 
     @OneToOne(cascade = CascadeType.ALL)

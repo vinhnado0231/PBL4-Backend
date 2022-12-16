@@ -4,10 +4,10 @@ import lombok.Data;
 
 @Data
 public class UserCreateDTO {
-    String username;
-    String password;
-    String email;
-    String name;
-    String dateOfBirth;
-    boolean gender;
+    private String username;
+    private String password;
+    private String email;
+    private String name;
+    private String dateOfBirth;
+    private boolean gender;
 }

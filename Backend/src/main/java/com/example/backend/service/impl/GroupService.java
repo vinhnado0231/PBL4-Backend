@@ -48,7 +48,7 @@ public class GroupService implements IGroupService {
             if (message == null) {
                 groupDTO = new GroupDTO(group.getIdGroup(), group.getNameGroup(), group.isSingle(), groupUser.getRoleGroup(),
                         null, null, null, null, null, null,
-                        0);
+                        null);
                 groupDTOS.add(groupDTO);
                 continue;
             }

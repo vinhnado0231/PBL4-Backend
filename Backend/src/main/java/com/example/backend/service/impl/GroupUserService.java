@@ -30,11 +30,12 @@ public class GroupUserService implements IGroupUserService {
         }
     }
 
-//    @Override
-//    public void changeidReadMessage(long id, GroupUser groupUser) {
-//        groupUser.setIdReadMessage(id);
-//        groupUserRepository.save(groupUser);
-//    }
+    @Override
+    public void changeidReadMessage(long id, long idGroup,long idUser) {
+        GroupUser groupUser = getGroupUserByIdUserIdGroup(idUser,idGroup);
+        groupUser.setIdReadMessage(id);
+        groupUserRepository.save(groupUser);
+    }
 
     @Override
     public GroupUser getGroupUserByIdUserIdGroup(long idUser, long idGroup) {

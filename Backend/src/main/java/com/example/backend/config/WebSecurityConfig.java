@@ -3,6 +3,7 @@ package com.example.backend.config;
 import com.example.backend.ultil.JwtFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,12 +12,15 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.InMemoryTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 
 @Configuration
@@ -70,12 +74,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().and()
                 .rememberMe().tokenRepository(this.persistentTokenRepository())
                 .tokenValiditySeconds(24 * 60 * 60); // 24h
+
+        http.sessionManagement().maximumSessions(1).sessionRegistry(sessionRegistry());
     }
 
     @Bean
     public PersistentTokenRepository persistentTokenRepository() {
-        InMemoryTokenRepositoryImpl memory = new InMemoryTokenRepositoryImpl();
-        return memory;
+        return new InMemoryTokenRepositoryImpl();
+    }
+
+    @Bean
+    public SessionRegistry sessionRegistry() {
+        return new SessionRegistryImpl();
+    }
+
+    @Bean
+    public ServletListenerRegistrationBean<HttpSessionEventPublisher> httpSessionEventPublisher() {
+        return new ServletListenerRegistrationBean<>(new HttpSessionEventPublisher());
     }
 }
 

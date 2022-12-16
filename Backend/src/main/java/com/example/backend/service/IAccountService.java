@@ -20,4 +20,6 @@ public interface IAccountService {
 
     long getIdUserByUsername(String username);
 
+    void changeTimeOff(Account account);
+
 }

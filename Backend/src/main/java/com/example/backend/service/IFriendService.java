@@ -1,6 +1,7 @@
 package com.example.backend.service;
 
 
+import com.example.backend.dto.FriendStatusDTO;
 import com.example.backend.model.Friend;
 import com.example.backend.model.User;
 
@@ -19,4 +20,8 @@ public interface IFriendService {
     Friend getFriendByIdFriendAndIdUser(long idUser,long idFriend);
 
     void deleteFriend(Friend friend);
+
+    List<Friend> searchFriend(long idUser,String search);
+
+    List<FriendStatusDTO> getStatusFriend(long idUserByUsername);
 }
