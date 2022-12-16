@@ -56,12 +56,6 @@ public class UserService implements IUserService {
                 userDTO.setDu_lich(user.getUserFavorite().getDu_lich());
                 userDTO.setCoffee(user.getUserFavorite().getCoffee());
                 userDTO.setChoi_game(user.getUserFavorite().getChoi_game());
-                userDTO.setHoi_hoa(user.getUserFavorite().getHoi_hoa());
-                userDTO.setHoc(user.getUserFavorite().getHoc());
-                userDTO.setNgu(user.getUserFavorite().getNgu());
-                userDTO.setMua_sam(user.getUserFavorite().getMua_sam());
-                userDTO.setNuoi_thu(user.getUserFavorite().getNuoi_thu());
-                userDTO.setMua_sam(user.getUserFavorite().getMua_sam());
                 userDTO.setNau_an(user.getUserFavorite().getNau_an());
             }
             userDTOs.add(userDTO);

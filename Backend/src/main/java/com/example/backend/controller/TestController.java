@@ -283,6 +283,8 @@ public class TestController {
             while (scanner.hasNextLine()) {
                 String line =scanner.nextLine();
                 String[] words = line.split("/");
+
+                System.out.println("");
                 User user = new User();
                 user.setNameUser(words[0]);
                 user.setDateOfBirthUser(words[1]);
@@ -290,7 +292,18 @@ public class TestController {
                 user.setHomeTownUser(words[3]);
                 user.setGenderUser(Boolean.parseBoolean(words[4]));
                 UserFavorite userFavorite = new UserFavorite();
-
+                userFavorite.setAn_uong(Float.parseFloat(words[5]));
+                userFavorite.setCa_nhac(Float.parseFloat(words[6]));
+                userFavorite.setChoi_game(Float.parseFloat(words[7]));
+                userFavorite.setCode(Float.parseFloat(words[8]));
+                userFavorite.setCoffee(Float.parseFloat(words[9]));
+                userFavorite.setDoc_sach(Float.parseFloat(words[10]));
+                userFavorite.setDu_lich(Float.parseFloat(words[11]));
+                userFavorite.setNau_an(Float.parseFloat(words[12]));
+                userFavorite.setThe_thao(Float.parseFloat(words[13]));
+                userFavorite.setXem_phim(Float.parseFloat(words[14]));
+                user.setUserFavorite(userFavorite);
+               userRepository.save(user);
             }
         } finally {
             try {
