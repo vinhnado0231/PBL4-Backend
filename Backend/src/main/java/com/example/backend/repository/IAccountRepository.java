@@ -10,4 +10,6 @@ public interface IAccountRepository extends JpaRepository<Account,Long> {
     Account findAccountByUser_EmailUser(String email);
     Account findAccountByToken(String token);
 
+    Account findByIdAccount(long id);
+
 }

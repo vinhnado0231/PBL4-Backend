@@ -36,7 +36,6 @@ public class MessageController {
 
     public static Set<MessageSession> messageSessionSet = new LinkedHashSet<>();
 
-
     @GetMapping("/get-message")
     public ResponseEntity<List<Message>> getMessage(@RequestParam Long idGroup
             , @RequestParam(name = "page", required = false, defaultValue = "0") Integer page, Authentication authentication) {

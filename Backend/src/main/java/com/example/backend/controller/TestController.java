@@ -39,13 +39,19 @@ public class TestController {
         }
         Scanner scanner = new Scanner(fileInputStream);
         try {
+            int count =0;
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
-                String[] words=line.split("\\s");
-                UserFavorite userFavorite = new UserFavorite(Float.parseFloat(words[0]),Float.parseFloat(words[1]),Float.parseFloat(words[2]),Float.parseFloat(words[3]),
-                        Float.parseFloat(words[4]),Float.parseFloat(words[5]),Float.parseFloat(words[6]),Float.parseFloat(words[7]),Float.parseFloat(words[8]),Float.parseFloat(words[9]),
-                        Float.parseFloat(words[10]),Float.parseFloat(words[11]),Float.parseFloat(words[12]),Float.parseFloat(words[13]),Float.parseFloat(words[14]),Float.parseFloat(words[15]),Float.parseFloat(words[16]));
-                userFavoriteRepository.save(userFavorite);
+                String[] words=line.split("/");
+
+                User user = new User();
+                user.setNameUser(words[0]);
+                user.setUserFavorite(userFavoriteRepository.findByIdUserFavorite(count++));
+                user.setAccount(accountRepository.findByIdAccount(count+7));
+                user.setAddressUser(words[2]);
+                user.setDateOfBirthUser(words[1]);
+                user.setHomeTownUser(words[3]);
+                userRepository.save(user);
             }
         } finally {
             try {
@@ -55,6 +61,13 @@ public class TestController {
 
             }
         }
+//
+//
+//
+
+//        User user = new User();
+//        user.setNameUser("Phuc");
+//        userRepository.save(user);
         //        UserFavorite userFavorite = new UserFavorite(1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f);
 
         //        UserFavorite userFavorite = new UserFavorite(1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f);

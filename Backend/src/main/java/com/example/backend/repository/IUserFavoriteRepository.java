@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface IUserFavoriteRepository extends JpaRepository<UserFavorite, Long>{
-
+    UserFavorite findByIdUserFavorite(long idUserFavorite);
 }
