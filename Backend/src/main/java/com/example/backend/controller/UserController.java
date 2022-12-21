@@ -36,24 +36,15 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-//    @GetMapping("/acc")
-//    public ResponseEntity<Object> createAccount() {
-//        Account account = new Account();
-//        account.setUsername("user6");
-//        account.setPassword(EncrypPasswordUtils.EncrypPasswordUtils("123456"));
-//        accountService.saveAccount(account);
-//        return new ResponseEntity<>(HttpStatus.OK);
-//    }
-
     @PostMapping("/create-new-user")
     public ResponseEntity<Object> createUser(@RequestBody UserCreateDTO user) {
         if (accountService.getAccountByUsername(user.getUsername()) != null) {
-            return new ResponseEntity<>(new Message(LocalDateTime.now(),"Not valid Username"),HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
         }
         if (accountService.findAccountByEmail(user.getEmail()) != null) {
-            return new ResponseEntity<>(new Message(LocalDateTime.now(),"Not valid Email"),HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
         }
         userService.createNewUser(user);
-        return new ResponseEntity<>(new Message(LocalDateTime.now(),"OK"),HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
