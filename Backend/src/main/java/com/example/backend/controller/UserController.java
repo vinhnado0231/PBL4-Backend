@@ -28,7 +28,7 @@ public class UserController {
         if (accountService.getAccountByUsername(username) != null) {
             return new ResponseEntity<>(new Message(LocalDateTime.now(),"Not valid Username"),HttpStatus.NOT_ACCEPTABLE);
         }
-        return new ResponseEntity<>(null,HttpStatus.OK);
+        return new ResponseEntity<>(new Message(LocalDateTime.now(),"Not valid Username"),HttpStatus.OK);
     }
 
     @GetMapping("/check-valid-email")
@@ -36,7 +36,7 @@ public class UserController {
         if (accountService.findAccountByEmail(email) != null) {
             return new ResponseEntity<>(new Message(LocalDateTime.now(),"Not valid Email"),HttpStatus.NOT_ACCEPTABLE);
         }
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(new Message(LocalDateTime.now(),"Not valid Email"),HttpStatus.OK);
     }
 
     @Autowired
@@ -44,7 +44,7 @@ public class UserController {
     @GetMapping("/check-valid-friend")
     public ResponseEntity<Object> checkEmail1() {
 
-        return new ResponseEntity<>(friendRepository.checkSimilarFriend(1,2),HttpStatus.OK);
+        return new ResponseEntity<>(friendRepository.isFriend(1,2),HttpStatus.OK);
     }
 
 //    @GetMapping("/acc")
@@ -65,6 +65,6 @@ public class UserController {
             return new ResponseEntity<>(new Message(LocalDateTime.now(),"Not valid Email"),HttpStatus.NOT_ACCEPTABLE);
         }
         userService.createNewUser(user);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(new Message(LocalDateTime.now(),"OK"),HttpStatus.OK);
     }
 }

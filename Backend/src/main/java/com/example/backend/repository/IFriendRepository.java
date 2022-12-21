@@ -33,5 +33,5 @@ public interface IFriendRepository extends JpaRepository<Friend, Long> {
             "WHERE f1.user_id = ? \n" +
             "and f2.user_id =? " +
             "and f1.friend_request = false;", nativeQuery = true)
-    Friend checkSimilarFriend(long idUser1, long idUser2);
+    Friend isFriend(long idUser1, long idUser2);
 }
