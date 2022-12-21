@@ -36,4 +36,9 @@ public class Message {
 
     @OneToMany(mappedBy = "message")
     private List<MessageReact> messageReactList;
+
+    public Message(LocalDateTime time, String message) {
+        this.time = time;
+        this.message = message;
+    }
 }
