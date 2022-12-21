@@ -24,21 +24,14 @@ public interface IFriendRepository extends JpaRepository<Friend, Long> {
             "where friend.id_user=? and is_request=false and user.name_user like concat('%'?'%')", nativeQuery = true)
     List<Friend> searchFriend(long idUser, String search);
 
-    @Query(value = "SELECT DISTINCT \n" +
-            "FROM \n" +
-            "    Friend f1\n" +
-            "    INNER JOIN Friends f2 \n" +
-            "    ON f1.user1 = f2.user1 \n" +
-            "    OR f1.user1 = f2.user2 \n" +
-            "    OR f1.user2 = f2.user1 \n" +
-            "    OR f1.user2 = f2.user2 \n" +
-            "    INNER JOIN Orders o \n" +
-            "    ON (f1.user1 = o.by_user \n" +
-            "    OR f1.user2 = o.by_user \n" +
-            "    OR f2.user1 = o.by_user \n" +
-            "    OR f2.user2 = o.by_user) \n" +
-            "WHERE   \n" +
-            "    (f1.user1 = 1\n" +
-            "    OR f1.user2 = 1)", nativeQuery = true)
-    List<Friend> checkSimilarFriend(long idUser1, long idUser2);
+    @Query(value = "SELECT u.user_id, u.name, \n" +
+            "       COUNT(f3.friend_id) mutual_friends \n" +
+            "FROM friends f1 \n" +
+            "INNER JOIN friends f2 ON f2.user_id = f1.friend_id \n" +
+            "INNER JOIN user u ON u.user_id = f2.user_id \n" +
+            "LEFT JOIN friend f3 ON f3.user_id = f1.user_id AND f3.friend_id = f2.friend_id \n" +
+            "WHERE f1.user_id = ? \n" +
+            "and f2.user_id =? " +
+            "and f1.friend_request = false;", nativeQuery = true)
+    Friend checkSimilarFriend(long idUser1, long idUser2);
 }

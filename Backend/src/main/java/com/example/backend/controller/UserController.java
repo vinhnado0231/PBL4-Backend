@@ -3,6 +3,7 @@ package com.example.backend.controller;
 import com.example.backend.dto.UserCreateDTO;
 import com.example.backend.model.Account;
 import com.example.backend.model.Message;
+import com.example.backend.repository.IFriendRepository;
 import com.example.backend.service.impl.AccountService;
 import com.example.backend.service.impl.UserService;
 import com.example.backend.ultil.EncrypPasswordUtils;
@@ -36,6 +37,14 @@ public class UserController {
             return new ResponseEntity<>(new Message(LocalDateTime.now(),"Not valid Email"),HttpStatus.NOT_ACCEPTABLE);
         }
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Autowired
+    IFriendRepository friendRepository;
+    @GetMapping("/check-valid-friend")
+    public ResponseEntity<Object> checkEmail1() {
+
+        return new ResponseEntity<>(friendRepository.checkSimilarFriend(1,2),HttpStatus.OK);
     }
 
 //    @GetMapping("/acc")
