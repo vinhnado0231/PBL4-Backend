@@ -6,6 +6,7 @@ import com.example.backend.model.Account;
 import com.example.backend.model.User;
 import com.example.backend.repository.IUserRepository;
 import com.example.backend.service.IUserService;
+import com.example.backend.ultil.EncrypPasswordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +26,7 @@ public class UserService implements IUserService {
     @Override
     public void createNewUser(UserCreateDTO userCreateDTO) {
         User user = new User();
-        Account account = new Account(userCreateDTO.getUsername(),userCreateDTO.getPassword());
+        Account account = new Account(userCreateDTO.getUsername(), EncrypPasswordUtils.EncrypPasswordUtils(userCreateDTO.getPassword()));
         user.setNameUser(userCreateDTO.getName());
         user.setGenderUser(userCreateDTO.isGender());
         user.setDateOfBirthUser(userCreateDTO.getDateOfBirth());
