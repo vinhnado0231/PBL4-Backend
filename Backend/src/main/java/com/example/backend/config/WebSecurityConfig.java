@@ -59,6 +59,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // dont authenticate this particular request
                 .authorizeRequests().antMatchers("/authenticate",
                         "/api/user/create-new-user",
+                        "/api/user/check-valid-username",
+                        "/api/user/check-valid-email",
+                        "/api/user/create-new-user",
                         "/api/user/acc",
                         "/api/account/forgot-password"
 //                        "**"
