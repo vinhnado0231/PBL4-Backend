@@ -1,7 +1,9 @@
 package com.example.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -9,6 +11,8 @@ import java.util.List;
 
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "message")
 public class Message {
     @Id
@@ -36,4 +40,9 @@ public class Message {
 
     @OneToMany(mappedBy = "message")
     private List<MessageReact> messageReactList;
+
+    public Message(LocalDateTime time, String message) {
+        this.time = time;
+        this.message = message;
+    }
 }

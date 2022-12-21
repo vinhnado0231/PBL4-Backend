@@ -61,4 +61,9 @@ public class FriendService implements IFriendService {
 
         return friendStatusDTOList;
     }
+
+    @Override
+    public boolean isFriend(long idUser, long idFriend) {
+        return friendRepository.isFriend(idUser, idFriend) != null ? true : false;
+    }
 }
