@@ -24,4 +24,6 @@ public interface IFriendService {
     List<Friend> searchFriend(long idUser,String search);
 
     List<FriendStatusDTO> getStatusFriend(long idUserByUsername);
+
+    boolean isFriend(long idUser,long idFriend);
 }
