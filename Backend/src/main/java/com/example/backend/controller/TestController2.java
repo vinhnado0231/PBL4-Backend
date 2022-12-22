@@ -7,6 +7,7 @@ import com.example.backend.model.UserFavorite;
 import com.example.backend.repository.IAccountRepository;
 import com.example.backend.repository.IUserFavoriteRepository;
 import com.example.backend.repository.IUserRepository;
+import com.example.backend.service.IFriendService;
 import com.example.backend.service.impl.AccountService;
 import com.example.backend.service.impl.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,11 +36,14 @@ public class TestController2 {
     private IUserRepository userRepository;
     @Autowired
     private IUserFavoriteRepository userFavoriteRepository;
+    @Autowired
+    private IFriendService friendService;
     public static int numberFriendOfUser(int graphFriend[][],int idUser){ // trả về số lượng bạn bè của user
         int numFriend=0;
         for(int i=0;i<graphFriend.length;i++){
             if(graphFriend[idUser][i]==1) numFriend++;
         }
+//        System.out.println("Numfriend Of User "+idUser+" is : "+numFriend);
         return numFriend;
     }
     public static int findNumberOfCommonFriend(int graphFriend[][],int idUser1,int idUser2){ // tìm số bạn chung giữa 2 user
@@ -81,19 +85,19 @@ public class TestController2 {
             int numberCommonFriend= findNumberOfCommonFriend( graphFriend, idUser,id);
             listNumberOfCommondFriend.put(id,numberCommonFriend);
         }
-        System.out.println("LIST RECOMEND");
+//        System.out.println("LIST RECOMEND");
         Set<Integer> set = listNumberOfCommondFriend.keySet();
-        for (Integer key : set) {
-            System.out.println("User"+key + " : " + listNumberOfCommondFriend.get(key));
-        }
-        System.out.println(" SORT LIST RECOMEND");
+//        for (Integer key : set) {
+//            System.out.println("User"+key + " : " + listNumberOfCommondFriend.get(key));
+//        }
+//        System.out.println(" SORT LIST RECOMEND");
 //        LinkedHashMap<Integer,Integer> sortlist= sortHashMapByValues(listNumberOfCommondFriend);
         HashMap<Integer, Integer> sortlist=sortByValue(listNumberOfCommondFriend);
-        for (Map.Entry<Integer, Integer> mapElement : sortlist.entrySet()) {
-            Integer key = mapElement.getKey();
-            Integer value = mapElement.getValue();
-            System.out.println("User"+key + " : " + value);
-        }
+//        for (Map.Entry<Integer, Integer> mapElement : sortlist.entrySet()) {
+//            Integer key = mapElement.getKey();
+//            Integer value = mapElement.getValue();
+//            System.out.println("User"+key + " : " + value);
+//        }
         return sortlist;
 
     }
@@ -119,6 +123,7 @@ public class TestController2 {
 
     public static LinkedList<Integer> listCommondFiend(int graphFriend[][],int idUser){ // trả về list bạn chung của một user
         // list này chứa những thằng có bạn chung với user A
+//        System.out.println("Dong 25 , list ban chung");
         LinkedList<Integer> list= new LinkedList<Integer>();
         int id = idUser;
         for(int i=0;i<graphFriend.length;i++){
@@ -126,6 +131,7 @@ public class TestController2 {
                 for(int j=0;j<graphFriend.length;j++){
                     if(graphFriend[i][j]==1 && j!=id && j!=i &&graphFriend[idUser][j]!=1){
                         list.add(j);
+                        System.out.print(j+" ");
                     }
                 }
             }
@@ -173,7 +179,7 @@ public class TestController2 {
                 score+=1.0/numberFriendOfUser(graphFriend,id);
             }
             listRecommendScore.put(key,score);
-            System.out.println("User"+key +" , Score = "+score);
+//            System.out.println("User"+key +" , Score = "+score);
         }
         listRecommendScore=sortByValue2(listRecommendScore);
         return listRecommendScore;
@@ -188,16 +194,28 @@ public class TestController2 {
         InitGraph(graphFriend,numberUser);
         for(int i=0;i<=numberUser;i++){
             for(int j=0;j<=i;j++){
-                if(true){
+                if(friendService.isFriend(i,j)){
                     graphFriend[i][j]=1;
                     graphFriend[j][i]=1;
                 }
-
             }
         }
-
-        recomendListAlgorithm2(graphFriend,0);
-        return new ResponseEntity<>(HttpStatus.OK);
+//        for(int i=0;i<=numberUser;i++){
+//            for(int j=0;j<=numberUser;j++){
+//                System.out.print( graphFriend[i][j]+" ");
+//            }
+//            System.out.println("");
+//        }
+        LinkedList<UserDTO> result=new LinkedList<>();
+        HashMap<Integer, Double> listRecommendScore=recomendListAlgorithm2(graphFriend,2);// truyền id muốn recoomend vô đây
+        for (Map.Entry<Integer, Double> mapElement : listRecommendScore.entrySet()) {
+            Integer key = mapElement.getKey();
+            result.add(users.get(key));
+        }
+        for(int i=0;i<result.size();i++){
+            System.out.printf("ID : "+result.get(i).getIdUser()+", Ngay Sinh :"+result.get(i).getDateOfBirthUser());
+        }
+        return new ResponseEntity<>(friendService.isFriend(1,2),HttpStatus.OK);
     }
 
 }
