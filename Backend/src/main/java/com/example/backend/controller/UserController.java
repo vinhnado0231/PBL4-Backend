@@ -1,18 +1,23 @@
 package com.example.backend.controller;
 
 import com.example.backend.dto.UserCreateDTO;
+import com.example.backend.dto.UserDTO;
 import com.example.backend.model.Account;
 import com.example.backend.model.User;
 import com.example.backend.repository.IUserRepository;
 import com.example.backend.service.impl.AccountService;
 import com.example.backend.service.impl.UserService;
 import com.example.backend.ultil.EncrypPasswordUtils;
+import com.example.backend.ultil.FriendRequest.FriendRequest1;
+import com.example.backend.ultil.FriendRequest.FriendRequest2;
 import com.example.backend.ultil.ScheduledTasks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.config.ScheduledTask;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.LinkedList;
 
 @RestController
 @CrossOrigin("*")
@@ -46,14 +51,11 @@ public class UserController {
 
 //    @Autowired
 //    private IUserRepository userRepository;
-//    @GetMapping("/check-valid-acc")
-//    public ResponseEntity<Object> checkonline1() {
-//        Account account = new Account("user1", EncrypPasswordUtils.EncrypPasswordUtils("123456"));
-//        User user = userRepository.findById(1L).orElse(null);
-//        user.setAccount(account);
-//        userRepository.save(user);
-//        return new ResponseEntity<>(HttpStatus.OK);
-//    }
+    @GetMapping("/check-valid-acc")
+    public ResponseEntity<Object> checkonline1() {
+        LinkedList<UserDTO> list = FriendRequest2.ListRecommend(1);
+        return new ResponseEntity<>(list,HttpStatus.OK);
+    }
 
     @PostMapping("/create-new-user")
     public ResponseEntity<Object> createUser(@RequestBody UserCreateDTO user) {

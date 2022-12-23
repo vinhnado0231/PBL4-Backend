@@ -1,42 +1,24 @@
-package com.example.backend.controller;
+package com.example.backend.ultil.FriendRequest;
 
 import com.example.backend.dto.UserDTO;
-import com.example.backend.model.Account;
-import com.example.backend.model.User;
-import com.example.backend.model.UserFavorite;
-import com.example.backend.repository.IAccountRepository;
-import com.example.backend.repository.IUserFavoriteRepository;
-import com.example.backend.repository.IUserRepository;
-import com.example.backend.service.impl.AccountService;
-import com.example.backend.service.impl.UserService;
+import com.example.backend.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.*;
-import java.util.logging.Logger;
-
-@Controller
-public class TestController {
+@Component
+@EnableAsync
+public class FriendRequest1 {
     @Autowired
-    private UserService userService;
-    @Autowired
-    private AccountService accountService;
-
-    @Autowired
-    private IAccountRepository accountRepository;
-    @Autowired
-    private IUserRepository userRepository;
-    @Autowired
-    private IUserFavoriteRepository userFavoriteRepository;
-
-
+    private IUserService userService;
+    public static double userSimilarityMatrix[][] ;
+    public static LinkedList<UserDTO> users = new LinkedList<>();
     public static Vector<String> initListHobbies(Vector<String> listHB) {
         listHB.add("Ăn uống");
         listHB.add("Ca nhạc");
@@ -63,21 +45,15 @@ public class TestController {
         HashMap<Integer, Double> listUserAndValue = new HashMap<Integer, Double>();
         for (int id = 0; id < numUser; id++) {
             if (normalizedMatrix[idItem][id] != 0) {
-//                System.out.print(normalizedMatrix[idItem][id]+" ");
-//                listUserRated.add(id);
                 listUserAndValue.put(id, userSimilarity[idUser][id]);
             }
         }
 
-
-//        System.out.println("========");
         HashMap<Integer, Double> sortlist = sortByValue(listUserAndValue);
         for (Map.Entry<Integer, Double> mapElement : sortlist.entrySet()) {
             Integer key = mapElement.getKey();
             Double value = mapElement.getValue();
-//            System.out.println("User"+key + " : " + value);
         }
-        // slove
         int dem = 0;
         double tuso = 0.0;
         double mauso = 0.0;
@@ -92,16 +68,6 @@ public class TestController {
         }
         if (mauso == 0) return 0;
         rs = tuso / mauso;
-//        System.out.println("Rs = "+rs);
-
-        // vì lấy k giá trị nên chạy tới k thôi ,
-//        for(int j=0;j<listUserRated.size();j++){
-//            listValueSimilarity.add(userSimilarity[idUser][listUserRated.get(j)]);
-//        }
-//
-//        Collections.sort(listValueSimilarity, Collections.reverseOrder()); // sort list value, lấy k giá trị lớn nhất
-//
-
         return rs;
     }
 
@@ -212,91 +178,74 @@ public class TestController {
                 }
             }
         }
-//        for(int i=0;i<row;i++){
-//            for (int j=0;j<col;j++){
-//                System.out.print(matrix[i][j]+" ");
-//            }
-//            System.out.println("");
-//        }
-
-
     }
 
-    public static LinkedList<UserDTO> getListRecommendByIdUser(double userSimilarityMatrix[][], LinkedList<UserDTO> listUser, int idUser) {
+    public static LinkedList<UserDTO> getListRecommendByIdUser(int idUser) {
         LinkedList<UserDTO> list = new LinkedList<>();
         HashMap<Integer, Double> listUserAndValue = new HashMap<Integer, Double>();
-        for (int id = 0; id < listUser.size(); id++) {
+        for (int id = 0; id < users.size(); id++) {
             listUserAndValue.put(id, userSimilarityMatrix[idUser][id]);
         }
-//        System.out.println("========");
         HashMap<Integer, Double> sortlist = sortByValue(listUserAndValue);
         for (Map.Entry<Integer, Double> mapElement : sortlist.entrySet()) {
             Integer key = mapElement.getKey();
             Double value = mapElement.getValue();
-            list.add(listUser.get(key));
+            list.add(users.get(key));
         }
-
         return list;
     }
 
-    @GetMapping("/test")
-    public ResponseEntity<Object> checkUsername() {
-        LinkedList<UserDTO> users = userService.getAllUserDTO();// get all user from database
+    @Async
+    @Scheduled(fixedRate = 1000 * 30)
+    public void FriendRequestTest() {
+        System.out.println("Vao r nay Request1");
+        users = userService.getAllUserDTO();// get all user from database
         Vector<String> hobbies = new Vector<>();
         hobbies = initListHobbies(hobbies); // init list hobbies for user
         double originalMatrix[][] = new double[hobbies.size() + 1][users.size() + 1]; // ma trận ban đầu
         double normalizedMatrix[][] = new double[hobbies.size() + 1][users.size() + 1]; // ma trận sau khi chuẩn hóa
-        double userSimilarityMatrix[][] = new double[users.size() + 1][users.size() + 1];// ma trận thể hiện sự giống nhau giữa các user
+        userSimilarityMatrix = new double[users.size() + 1][users.size() + 1];// ma trận thể hiện sự giống nhau giữa các user
         int numHobbies = hobbies.size();
         int numUser = users.size();
         initOriginalMatrix(originalMatrix, numHobbies, numUser, users);
         for (int i = 0; i < numHobbies; i++) {
             for (int j = 0; j < numUser; j++) {
                 normalizedMatrix[i][j] = originalMatrix[i][j];
-                System.out.print(normalizedMatrix[i][j] + " ");
+//                System.out.print(normalizedMatrix[i][j] + " ");
             }
-            System.out.println("");
+//            System.out.println("");
         }
-        System.out.println("CHUAN HOA MA TRAN : ( NormalizedMatrix) \n");
+//        System.out.println("CHUAN HOA MA TRAN : ( NormalizedMatrix) \n");
         normalizedMatrix(normalizedMatrix, numHobbies, numUser);
-        for (int i = 0; i < numHobbies; i++) {
-            for (int j = 0; j < numUser; j++) {
-                System.out.print(normalizedMatrix[i][j] + " ");
-            }
-            System.out.println(" ");
-        }
-        System.out.println("USER SIMILARITY");
+//        for (int i = 0; i < numHobbies; i++) {
+//            for (int j = 0; j < numUser; j++) {
+//                System.out.print(normalizedMatrix[i][j] + " ");
+//            }
+//            System.out.println(" ");
+//        }
+//        System.out.println("USER SIMILARITY");
         userSimilarity(normalizedMatrix, numHobbies, numUser, userSimilarityMatrix);
-        for (int i = 0; i < numUser; i++) {
-            for (int j = 0; j < numUser; j++) {
-                System.out.print(userSimilarityMatrix[i][j] + " ");
-            }
-            System.out.println("");
-        }
+//        for (int i = 0; i < numUser; i++) {
+//            for (int j = 0; j < numUser; j++) {
+//                System.out.print(userSimilarityMatrix[i][j] + " ");
+//            }
+//            System.out.println("");
+//        }
         fillNormalizedMatrixFull(userSimilarityMatrix, normalizedMatrix, numUser, numHobbies);
-        System.out.println("AFTER");
-        for (int i = 0; i < numHobbies; i++) {
-            for (int j = 0; j < numUser; j++) {
-                System.out.print(normalizedMatrix[i][j] + " ");
-            }
-            System.out.println(" ");
-        }
-        System.out.println("USER SIMILARITY");
+//        System.out.println("AFTER");
+//        for (int i = 0; i < numHobbies; i++) {
+//            for (int j = 0; j < numUser; j++) {
+//                System.out.print(normalizedMatrix[i][j] + " ");
+//            }
+//            System.out.println(" ");
+//        }
+//        System.out.println("USER SIMILARITY");
         userSimilarity(normalizedMatrix, numHobbies, numUser, userSimilarityMatrix);
-        for (int i = 0; i < numUser; i++) {
-            for (int j = 0; j < numUser; j++) {
-                System.out.print(userSimilarityMatrix[i][j] + " ");
-            }
-            System.out.println("");
-        }
-
-        System.out.println("TEST");
-        LinkedList<UserDTO> list = getListRecommendByIdUser(userSimilarityMatrix, users, 1);
-        for (int i = 0; i < list.size(); i++) {
-            System.out.println("ID : " + list.get(i).getIdUser() + ", Ngay Sinh :" + list.get(i).getDateOfBirthUser());
-
-        }
-        return new ResponseEntity<>(HttpStatus.OK);
+//        for (int i = 0; i < numUser; i++) {
+//            for (int j = 0; j < numUser; j++) {
+//                System.out.print(userSimilarityMatrix[i][j] + " ");
+//            }
+//            System.out.println("");
+//        }
     }
-
 }

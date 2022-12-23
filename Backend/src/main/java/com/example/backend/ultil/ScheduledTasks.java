@@ -40,10 +40,10 @@ public class ScheduledTasks {
     @Async
     @Scheduled(fixedRate = 1000 * 30)
     public void getUsersFromSessionRegistry() {
-        System.out.println("VAO");
         userOnline = sessionRegistry.getAllPrincipals().stream()
                 .filter(u -> !sessionRegistry.getAllSessions(u, false).isEmpty())
                 .map(Object::toString)
                 .collect(Collectors.toList());
     }
+
 }
