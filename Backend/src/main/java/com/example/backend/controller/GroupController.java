@@ -39,12 +39,12 @@ public class GroupController {
     @PostMapping("/create-group")
     public ResponseEntity<Group> createGroup(@RequestBody List<Long> idUserList) {
         Group group = new Group();
-        groupService.saveGroup(group);
         List<User> users = new ArrayList<>();
         for (Long id : idUserList) {
             users.add(userService.getUserByIdUser(id));
         }
         groupUserService.addUserToGroup(users, group);
+        groupService.saveGroup(group);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

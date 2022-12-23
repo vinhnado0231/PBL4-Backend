@@ -4,6 +4,7 @@ import com.example.backend.dto.UserCreateDTO;
 import com.example.backend.dto.UserDTO;
 import com.example.backend.service.impl.AccountService;
 import com.example.backend.service.impl.UserService;
+import com.example.backend.ultil.FriendRequest.FriendRecommend1;
 import com.example.backend.ultil.FriendRequest.FriendRecommend2;
 import com.example.backend.ultil.ScheduledTasks;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,7 @@ public class UserController {
 
     @GetMapping("/check-valid-online")
     public ResponseEntity<Object> checkonline() {
-        return  new ResponseEntity<>(ScheduledTasks.userOnline,HttpStatus.OK);
+        return  new ResponseEntity<>(FriendRecommend1.getListRecommendByIdUser(1),HttpStatus.OK);
     }
 
 //    @Autowired

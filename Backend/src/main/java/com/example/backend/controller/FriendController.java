@@ -4,6 +4,7 @@ import com.example.backend.dto.FriendDTO;
 import com.example.backend.model.Friend;
 import com.example.backend.repository.IFriendRepository;
 import com.example.backend.service.*;
+import com.example.backend.ultil.FriendRequest.FriendRecommend1;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -92,7 +93,7 @@ public class FriendController {
     private IFriendRepository friendRepository;
     @GetMapping("/mu")
     public ResponseEntity<Object> searchFriend() {
-        return new ResponseEntity<>(friendRepository.mutualFriend(1,3), HttpStatus.OK);
+        return new ResponseEntity<>(FriendRecommend1.getListRecommendByIdUser(1), HttpStatus.OK);
     }
 
 //    @GetMapping("/get-status-friend")
