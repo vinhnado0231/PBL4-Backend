@@ -233,7 +233,11 @@ public class TestController {
         for (Map.Entry<Integer, Double> mapElement : sortlist.entrySet()) {
             Integer key = mapElement.getKey();
             Double value = mapElement.getValue();
-            list.add(listUser.get(key));
+
+           if(value>0){
+               System.out.println("ID : "+key+", Value : "+value);
+               list.add(listUser.get(key-1));
+           }
         }
 
         return list;
@@ -291,10 +295,26 @@ public class TestController {
         }
 
         System.out.println("TEST");
-        LinkedList<UserDTO> list = getListRecommendByIdUser(userSimilarityMatrix, users, 1);
+        int iduser=1;String namsinh="";int index=0;
+        for(int i=0;i<users.size();i++){
+            if(users.get(i).getIdUser()==iduser){
+                namsinh=users.get(i).getDateOfBirthUser();
+                index=i;
+            }
+        }
+        int DateOfBirthUser=Integer.parseInt(namsinh.trim());
+        LinkedList<UserDTO> list = getListRecommendByIdUser(userSimilarityMatrix, users, iduser);
+
         for (int i = 0; i < list.size(); i++) {
             System.out.println("ID : " + list.get(i).getIdUser() + ", Ngay Sinh :" + list.get(i).getDateOfBirthUser());
-
+            int DateOfBirth=Integer.parseInt(list.get(i).getDateOfBirthUser().trim());
+            if(Math.abs(DateOfBirth-DateOfBirthUser)>10){
+                list.remove(i);
+            }
+        }
+        list.remove(index);
+        for (int i = 0; i < list.size(); i++) {
+            System.out.println("ID : " + list.get(i).getIdUser() + ", Ngay Sinh :" + list.get(i).getDateOfBirthUser());
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }

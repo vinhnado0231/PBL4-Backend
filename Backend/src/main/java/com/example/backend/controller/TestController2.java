@@ -179,7 +179,7 @@ public class TestController2 {
                 score+=1.0/numberFriendOfUser(graphFriend,id);
             }
             listRecommendScore.put(key,score);
-//            System.out.println("User"+key +" , Score = "+score);
+            System.out.println("User"+key +" , Score = "+score);
         }
         listRecommendScore=sortByValue2(listRecommendScore);
         return listRecommendScore;
@@ -213,7 +213,7 @@ public class TestController2 {
             result.add(users.get(key));
         }
         for(int i=0;i<result.size();i++){
-            System.out.printf("ID : "+result.get(i).getIdUser()+", Ngay Sinh :"+result.get(i).getDateOfBirthUser());
+            System.out.println("ID : "+result.get(i).getIdUser()+", Ngay Sinh :"+result.get(i).getDateOfBirthUser());
         }
         return new ResponseEntity<>(friendService.isFriend(1,2),HttpStatus.OK);
     }
