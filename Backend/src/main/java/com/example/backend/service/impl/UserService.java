@@ -4,6 +4,7 @@ import com.example.backend.dto.UserCreateDTO;
 import com.example.backend.dto.UserDTO;
 import com.example.backend.model.Account;
 import com.example.backend.model.User;
+import com.example.backend.model.UserFavorite;
 import com.example.backend.repository.IUserRepository;
 import com.example.backend.service.IUserService;
 import com.example.backend.ultil.EncrypPasswordUtils;
@@ -27,11 +28,13 @@ public class UserService implements IUserService {
     public void createNewUser(UserCreateDTO userCreateDTO) {
         User user = new User();
         Account account = new Account(userCreateDTO.getUsername(), EncrypPasswordUtils.EncrypPasswordUtils(userCreateDTO.getPassword()));
+        UserFavorite userFavorite = new UserFavorite();
         user.setNameUser(userCreateDTO.getName());
         user.setGenderUser(userCreateDTO.isGender());
         user.setDateOfBirthUser(userCreateDTO.getDateOfBirth());
         user.setEmailUser(userCreateDTO.getEmail());
         user.setAccount(account);
+        user.setUserFavorite(userFavorite);
         userRepository.save(user);
     }
 

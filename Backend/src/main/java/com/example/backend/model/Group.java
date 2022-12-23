@@ -20,6 +20,10 @@ public class Group {
     @Column(name = "name_group")
     private String nameGroup;
 
+    @Lob
+    @Column(name = "avatar_group")
+    private String avatarGroup;
+
     @OneToMany(mappedBy = "group")
     private List<Message> messageList;
 }
