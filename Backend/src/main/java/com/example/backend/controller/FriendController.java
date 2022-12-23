@@ -1,7 +1,8 @@
 package com.example.backend.controller;
 
-import com.example.backend.dto.FriendStatusDTO;
+import com.example.backend.dto.FriendDTO;
 import com.example.backend.model.Friend;
+import com.example.backend.repository.IFriendRepository;
 import com.example.backend.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 @RestController
@@ -66,14 +69,13 @@ public class FriendController {
     }
 
     @GetMapping("/get-all-friend")
-    public ResponseEntity<List<Friend>> getllFriend(Authentication authentication) {
-        long idUser = accountService.getIdUserByUsername(authentication.getName());
-        List<Friend> friends = friendService.getAllFriendByIdUser(idUser);
+    public ResponseEntity<ArrayList<FriendDTO>> getAllFriend(Authentication authentication) {
+        ArrayList<FriendDTO> friends = friendService.getAllFriendByIdUser(accountService.getIdUserByUsername(authentication.getName()));
         return new ResponseEntity<>(friends, HttpStatus.OK);
     }
 
     @GetMapping("/get-all-friend-request")
-    public ResponseEntity<List<Friend>> getllFriendRequest(Authentication authentication) {
+    public ResponseEntity<List<Friend>> getAllFriendRequest(Authentication authentication) {
         long idUser = accountService.getIdUserByUsername(authentication.getName());
         List<Friend> friends = friendService.getAllFriendRequestByIdUser(idUser);
         return new ResponseEntity<>(friends, HttpStatus.OK);
@@ -84,6 +86,13 @@ public class FriendController {
         long idUser = accountService.getIdUserByUsername(authentication.getName());
         List<Friend> friends = friendService.searchFriend(idUser,search);
         return new ResponseEntity<>(friends, HttpStatus.OK);
+    }
+
+    @Autowired
+    private IFriendRepository friendRepository;
+    @GetMapping("/mu")
+    public ResponseEntity<Object> searchFriend() {
+        return new ResponseEntity<>(friendRepository.mutualFriend(1,3), HttpStatus.OK);
     }
 
 //    @GetMapping("/get-status-friend")

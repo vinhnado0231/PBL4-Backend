@@ -3,18 +3,15 @@ package com.example.backend.ultil.FriendRequest;
 import com.example.backend.dto.UserDTO;
 import com.example.backend.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.*;
 @Component
 @EnableAsync
-public class FriendRequest1 {
+public class FriendRecommend1 {
     @Autowired
     private IUserService userService;
     public static double userSimilarityMatrix[][] ;

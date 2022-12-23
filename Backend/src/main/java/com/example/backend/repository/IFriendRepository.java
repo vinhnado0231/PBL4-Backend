@@ -26,4 +26,14 @@ public interface IFriendRepository extends JpaRepository<Friend, Long> {
 
     @Query(value = "SELECT * from friend where id_user =? and id_friend=? and is_request = false", nativeQuery = true)
     Friend isFriend(long idUser1, long idUser2);
+
+    @Query(value = "SELECT  COUNT(f3.id_friend) mutual_friends \n" +
+            "FROM friend f1 \n" +
+            "INNER JOIN friend f2 ON f2.id_user = f1.id_friend \n" +
+            "LEFT JOIN friend f3 ON f3.id_user = f1.id_user AND f3.id_friend = f2.id_friend \n" +
+            "WHERE f1.id_user = ? \n" +
+            "and f2.id_user = ? \n" +
+            "and f1.is_request= false \n" +
+            "and f2.is_request= false",nativeQuery = true)
+    long mutualFriend(long idUser1, long idUser2);
 }

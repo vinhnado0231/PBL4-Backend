@@ -1,10 +1,13 @@
 package com.example.backend.service;
 
 
+import com.example.backend.dto.FriendDTO;
 import com.example.backend.dto.FriendStatusDTO;
 import com.example.backend.model.Friend;
 import com.example.backend.model.User;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public interface IFriendService {
@@ -12,7 +15,7 @@ public interface IFriendService {
 
     void updateFriend(Friend friend);
 
-    List<Friend> getAllFriendByIdUser(long idUser);
+    ArrayList<FriendDTO> getAllFriendByIdUser(long idUser);
 
     List<Friend> getAllFriendRequestByIdUser(long idUser);
 
@@ -26,4 +29,6 @@ public interface IFriendService {
     List<FriendStatusDTO> getStatusFriend(long idUserByUsername);
 
     boolean isFriend(long idUser,long idFriend);
+
+    List<FriendDTO> getListFriendRequest(long idUSer);
 }

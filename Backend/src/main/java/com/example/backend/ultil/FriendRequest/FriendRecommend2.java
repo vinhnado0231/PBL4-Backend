@@ -13,7 +13,7 @@ import java.util.*;
 
 @Component
 @EnableAsync
-public class FriendRequest2 {
+public class FriendRecommend2 {
     @Autowired
     private IUserService userService;
     @Autowired

@@ -2,19 +2,13 @@ package com.example.backend.controller;
 
 import com.example.backend.dto.UserCreateDTO;
 import com.example.backend.dto.UserDTO;
-import com.example.backend.model.Account;
-import com.example.backend.model.User;
-import com.example.backend.repository.IUserRepository;
 import com.example.backend.service.impl.AccountService;
 import com.example.backend.service.impl.UserService;
-import com.example.backend.ultil.EncrypPasswordUtils;
-import com.example.backend.ultil.FriendRequest.FriendRequest1;
-import com.example.backend.ultil.FriendRequest.FriendRequest2;
+import com.example.backend.ultil.FriendRequest.FriendRecommend2;
 import com.example.backend.ultil.ScheduledTasks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.config.ScheduledTask;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.LinkedList;
@@ -53,7 +47,7 @@ public class UserController {
 //    private IUserRepository userRepository;
     @GetMapping("/check-valid-acc")
     public ResponseEntity<Object> checkonline1() {
-        LinkedList<UserDTO> list = FriendRequest2.ListRecommend(1);
+        LinkedList<UserDTO> list = FriendRecommend2.ListRecommend(1);
         return new ResponseEntity<>(list,HttpStatus.OK);
     }
 
