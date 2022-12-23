@@ -39,7 +39,7 @@ public class AccountController {
             }
             accountService.updateToken(account);
             String resetPasswordLink = "http://localhost:3000/home/change-password/" + account.getToken();
-            sendEmail(email, resetPasswordLink);
+            sendEmailForgotPassword(email, resetPasswordLink);
             message = "We have sent a link to change the password. Please open email to check";
             return new ResponseEntity<>(message, HttpStatus.OK);
         } catch (UnsupportedEncodingException | MessagingException exception) {
@@ -79,7 +79,7 @@ public class AccountController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    private void sendEmail(String email, String resetPasswordLink) throws UnsupportedEncodingException, MessagingException {
+    private void sendEmailForgotPassword(String email, String resetPasswordLink) throws UnsupportedEncodingException, MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, "UTF-8");
         message.addHeader("Content-type", "text/HTML; charset=UTF-8");
@@ -565,17 +565,17 @@ public class AccountController {
                 " font-size: 20px; font-style: normal; font-weight: normal; line-height: 125%;\n" +
                 " letter-spacing: normal; text-align: center; display: block; margin: 0; padding:\n" +
                 " 0; text-align: left; width: 100%; font-size: 16px; font-weight: bold; '>What\n" +
-                " is A0721I1 Auction website?</h3>\n" +
+                " is EME webchat?</h3>\n" +
                 "\n" +
                 "                              <p style='margin: 10px 0; padding: 0; mso-line-height-rule: exactly;\n" +
                 " -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; color: #2a2a2a;\n" +
                 " font-family: \"Asap\", Helvetica, sans-serif; font-size: 12px; line-height: 150%;\n" +
-                " text-align: left; text-align: left; font-size: 14px; '>A0721I1 Auction is a website specializing in auction items, you can buy and sell auction items here at the lowest cost.\n" +
+                " text-align: left; text-align: left; font-size: 14px; '>EME Messenger is a website that enables chat, chat voice and communications between the social media site's web-based messaging and smartphones.\n" +
                 "                              </p>\n" +
                 "                              <div style=\"padding-bottom: 18px;\">\n" +
-                "                                <a href=\"http://localhost:4200/\" style=\"mso-line-height-rule: exactly; -ms-text-size-adjust: 100%;\n" +
+                "                                <a href=\"http://localhost:3000/\" style=\"mso-line-height-rule: exactly; -ms-text-size-adjust: 100%;\n" +
                 " -webkit-text-size-adjust: 100%; color: #f57153; font-weight: normal; text-decoration: none;\n" +
-                " font-size: 14px; color:#F57153; text-decoration:none;\" target=\"_blank\" title=\"Learn more about A0721I1 Auction website\">Learn More ❯</a>\n" +
+                " font-size: 14px; color:#F57153; text-decoration:none;\" target=\"_blank\" title=\"Learn more about EME webchat\">Learn More ❯</a>\n" +
                 "                              </div>\n" +
                 "                            </td>\n" +
                 "                          </tr>\n" +
@@ -653,4 +653,6 @@ public class AccountController {
         mailSender.send(message);
         System.out.println("Done send email forgot password to " + email);
     }
+
+
 }

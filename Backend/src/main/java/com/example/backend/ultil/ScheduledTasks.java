@@ -6,12 +6,11 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.session.SessionRegistry;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -23,12 +22,13 @@ public class ScheduledTasks {
     @Qualifier("sessionRegistry")
     private SessionRegistry sessionRegistry;
 
+    public static List<String> userOnline = new ArrayList<>();
+
     public static Set<ForgotPasswordToken> tokenForgotPasswordSet = new LinkedHashSet<>();
-    public static List<UserDetails> userOnline = new LinkedList<>();
 
     @Async
     @Scheduled(fixedRate = 1000 * 10)
-    public void checkForgotPasswordTokenExprired() {
+    public void CheckForgotPasswordTokenExprired() {
         for (ForgotPasswordToken tokenCheck : tokenForgotPasswordSet) {
             int diff = LocalDateTime.now().compareTo(tokenCheck.getTime());
             if (diff >= 0) {
@@ -39,13 +39,11 @@ public class ScheduledTasks {
 
     @Async
     @Scheduled(fixedRate = 1000 * 30)
-    public void findAllLoggedInUsers() {
-        userOnline = sessionRegistry.getAllPrincipals()
-                .stream()
-                .filter(principal -> principal instanceof UserDetails)
-                .map(UserDetails.class::cast)
+    public void getUsersFromSessionRegistry() {
+        System.out.println("VAO");
+        userOnline = sessionRegistry.getAllPrincipals().stream()
+                .filter(u -> !sessionRegistry.getAllSessions(u, false).isEmpty())
+                .map(Object::toString)
                 .collect(Collectors.toList());
     }
-
-
 }
