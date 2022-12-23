@@ -8,17 +8,16 @@ import javax.persistence.*;
 @Data
 @Table(name = "group_user")
 public class GroupUser {
-    @EmbeddedId
-    private GroupKey idGroupUser;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long idGroupUser;
 
     @ManyToOne
-    @MapsId("idUser")
-    @JoinColumn(name = "idUser")
+    @JoinColumn(name = "id_user")
     private User user;
 
-    @ManyToOne
-    @MapsId("idGroup")
-    @JoinColumn(name = "idGroup")
+    @ManyToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name = "id_group")
     private Group group;
 
     @Column(name = "id_read_message")

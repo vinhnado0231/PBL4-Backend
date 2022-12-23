@@ -37,14 +37,20 @@ public class GroupController {
     }
 
     @PostMapping("/create-group")
-    public ResponseEntity<Group> createGroup(@RequestBody List<Long> idUserList) {
+    public ResponseEntity<Group> createGroup(@RequestBody List<Long> idUserList, Authentication authentication) {
         Group group = new Group();
-        List<User> users = new ArrayList<>();
-        for (Long id : idUserList) {
-            users.add(userService.getUserByIdUser(id));
-        }
-        groupUserService.addUserToGroup(users, group);
+        group.setSingle(false);
         groupService.saveGroup(group);
+        List<User> users = new ArrayList<>();
+        users.add(userService.getUserByIdUser(accountService.getIdUserByUsername(authentication.getName())));
+        User user;
+        for (Long id : idUserList) {
+            user = userService.getUserByIdUser(id);
+            if(user != null){
+                users.add(user);
+            }
+        }
+        groupUserService.addUserToGroup(users, group, users.get(0).getIdUser());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -55,14 +61,7 @@ public class GroupController {
         for (Long id : idUserList) {
             users.add(userService.getUserByIdUser(id));
         }
-        groupUserService.addUserToGroup(users, group);
+        groupUserService.addUserToGroup(users, group, null);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
-
-
-//    @GetMapping("/get-all-group")
-//    public ResponseEntity<Object> getAllGroup(@RequestParam long idUser){
-//
-//    }
 }

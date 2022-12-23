@@ -6,6 +6,7 @@ import com.example.backend.model.User;
 import com.example.backend.repository.IGroupUserRepository;
 import com.example.backend.service.IGroupUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,25 +22,32 @@ public class GroupUserService implements IGroupUserService {
     }
 
     @Override
-    public void addUserToGroup(List<User> users, Group group) {
+    public void addUserToGroup(List<User> users, Group group, @Nullable Long idLeader) {
         for (User user : users) {
-            GroupUser groupUser = new GroupUser();
-            groupUser.setGroup(group);
-            groupUser.setUser(user);
-            groupUserRepository.save(groupUser);
+            if (getGroupUserByIdUserIdGroup(user.getIdUser(), group.getIdGroup()) == null) {
+                GroupUser groupUser = new GroupUser();
+                groupUser.setGroup(group);
+                groupUser.setUser(user);
+                groupUserRepository.save(groupUser);
+            }
+        }
+        if (idLeader != null) {
+            GroupUser leader = getGroupUserByIdUserIdGroup(idLeader, group.getIdGroup());
+            leader.setRoleGroup(1);
+            groupUserRepository.save(leader);
         }
     }
 
     @Override
-    public void changeidReadMessage(long id, long idGroup,long idUser) {
-        GroupUser groupUser = getGroupUserByIdUserIdGroup(idUser,idGroup);
+    public void changeidReadMessage(long id, long idGroup, long idUser) {
+        GroupUser groupUser = getGroupUserByIdUserIdGroup(idUser, idGroup);
         groupUser.setIdReadMessage(id);
         groupUserRepository.save(groupUser);
     }
 
     @Override
     public GroupUser getGroupUserByIdUserIdGroup(long idUser, long idGroup) {
-        return groupUserRepository.getGroupUserByIdUserIdGroup(idUser,idGroup);
+        return groupUserRepository.getGroupUserByIdUserIdGroup(idUser, idGroup);
     }
 
     @Override
