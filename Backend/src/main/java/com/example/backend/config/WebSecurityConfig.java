@@ -63,8 +63,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/api/user/check-valid-email",
                         "/api/user/create-new-user",
                         "/api/user/acc",
-                        "/api/account/forgot-password",
-                        "**"
+                        "/api/account/forgot-password"
+//                        "**"
                 ).permitAll()
                 //Authenticate all another request
                 .anyRequest().authenticated().and().
