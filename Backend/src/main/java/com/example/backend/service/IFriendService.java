@@ -30,5 +30,7 @@ public interface IFriendService {
 
     boolean isFriend(long idUser,long idFriend);
 
-    List<FriendDTO> getListFriendRequest(long idUSer);
+    List<FriendDTO> getListFriendRecommend(long idUSer);
+
+    long getMutualFriend(long idUser1, long idUser2);
 }

@@ -165,7 +165,6 @@ public class FriendRecommend2 {
     @Async
     @Scheduled(fixedRate = 1000 * 30)
     public void checkUsername() {
-        System.out.println("Vao roi nay Request2");
         users = userService.getAllUserDTO();
         int numberUser = users.size();
         graphFriend= new int[numberUser + 1][numberUser + 1];// mảng này chứa đồ thị xem giữa các user có phải là bạn bè hay không, lấy ra danh sách bạn của 1 user chỉ cần

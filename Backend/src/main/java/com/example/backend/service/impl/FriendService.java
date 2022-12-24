@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -43,9 +42,9 @@ public class FriendService implements IFriendService {
     public ArrayList<FriendDTO> getAllFriendByIdUser(long idUser) {
         List<Friend> friends = friendRepository.findAllFriendByIdUser(idUser);
         ArrayList<FriendDTO> result = new ArrayList<>();
-        for (Friend friend: friends) {
+        for (Friend friend : friends) {
             User user = userService.getUserByIdUser(friend.getIdFriend());
-            result.add(new FriendDTO(user.getIdUser(),user.getNameUser(),user.getAvatar(),null));
+            result.add(new FriendDTO(user.getIdUser(), user.getNameUser(), user.getAvatar(), null));
         }
         return result;
     }
@@ -67,7 +66,7 @@ public class FriendService implements IFriendService {
 
     @Override
     public List<Friend> searchFriend(long idUser, String search) {
-        return  friendRepository.searchFriend(idUser,search);
+        return friendRepository.searchFriend(idUser, search);
     }
 
     @Override
@@ -83,19 +82,45 @@ public class FriendService implements IFriendService {
     }
 
     @Override
-    public List<FriendDTO> getListFriendRequest(long idUSer) {
-        List<UserDTO> listFriendRecommend1 = FriendRecommend1.getListRecommendByIdUser((int) idUSer);
-        List<UserDTO> listFriendRecommend2 = FriendRecommend2.ListRecommend((int) idUSer);
+    public long getMutualFriend(long idUser1, long idUser2) {
+        return friendRepository.mutualFriend(idUser1, idUser2);
+    }
+
+    @Override
+    public List<FriendDTO> getListFriendRecommend(long idUSer) {
         List<FriendDTO> result = new ArrayList<>();
-        for(int i=0;i<listFriendRecommend1.size();i++){
-            for(int j=0;j<listFriendRecommend2.size();j++){
-                if(listFriendRecommend1.get(i).getIdUser()==listFriendRecommend2.get(j).getIdUser()){
-                    UserDTO userDTO = listFriendRecommend1.get(i);
-//                    result.add(new FriendDTO(userDTO.getIdUser(),userDTO.ge));
-                }
+        List<UserDTO> listFriendRecommend1 = FriendRecommend1.getListRecommendAfterFilter((int) idUSer);
+        List<FriendDTO> result1 = new ArrayList<>();
+        for (UserDTO userDTO : listFriendRecommend1) {
+            User user = userService.getUserByIdUser(userDTO.getIdUser());
+            result1.add(new FriendDTO(user.getIdUser(), user.getNameUser(), user.getAvatar(), (int) friendRepository.mutualFriend(idUSer, user.getIdUser())));
+        }
+        List<UserDTO> listFriendRecommend2 = FriendRecommend2.ListRecommend((int) idUSer);
+        List<FriendDTO> result2 = new ArrayList<>();
+        for (int i = 0; i < listFriendRecommend2.size(); i++) {
+            User user = userService.getUserByIdUser(listFriendRecommend1.get(i).getIdUser());
+            result2.add(new FriendDTO(user.getIdUser(), user.getNameUser(), user.getAvatar(), (int) friendRepository.mutualFriend(idUSer, user.getIdUser())));
+        }
+
+//        for (int i = 0; i < result1.size(); i++) {
+//            for (int j = 0; i < result2.size(); j++) {
+//                if(result1.get(i).getIdFriend()==(result2.get(j).getIdFriend())){
+//                    User user = userService.getUserByIdUser(result2.get(j).getIdFriend());
+//                    result.add(new FriendDTO(user.getIdUser(), user.getNameUser(), user.getAvatar(), (int) friendRepository.mutualFriend(idUSer, user.getIdUser())));
+//                }
+//            }
+//        }
+        for (FriendDTO friendDTO : result1) {
+            if (!result.contains(friendDTO)) {
+                result.add(friendDTO);
             }
         }
-        return result;
+//        for (int i = 0; i < result2.size(); i++) {
+//            if(!result.contains(result2.get(i))){
+//                result.add(result2.get(i));
+//            }
+//        }
+        return result.stream().distinct().toList();
 
     }
 }

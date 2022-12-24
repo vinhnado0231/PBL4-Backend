@@ -89,11 +89,9 @@ public class FriendController {
         return new ResponseEntity<>(friends, HttpStatus.OK);
     }
 
-    @Autowired
-    private IFriendRepository friendRepository;
-    @GetMapping("/mu")
-    public ResponseEntity<Object> searchFriend() {
-        return new ResponseEntity<>(FriendRecommend1.getListRecommendByIdUser(1), HttpStatus.OK);
+    @GetMapping("/recommend-friend")
+    public ResponseEntity<Object> RecommendHandler(Authentication authentication) {
+        return new ResponseEntity<>(friendService.getListFriendRecommend(accountService.getIdUserByUsername(authentication.getName())), HttpStatus.OK);
     }
 
 //    @GetMapping("/get-status-friend")

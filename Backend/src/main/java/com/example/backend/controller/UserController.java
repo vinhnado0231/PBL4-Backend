@@ -39,18 +39,18 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/check-valid-online")
-    public ResponseEntity<Object> checkonline() {
-        return  new ResponseEntity<>(FriendRecommend1.getListRecommendByIdUser(1),HttpStatus.OK);
-    }
+//    @GetMapping("/check-valid-online")
+//    public ResponseEntity<Object> checkonline() {
+//        return  new ResponseEntity<>(FriendRecommend1.getListRecommendByIdUser(1),HttpStatus.OK);
+//    }
 
 //    @Autowired
 //    private IUserRepository userRepository;
-    @GetMapping("/check-valid-acc")
-    public ResponseEntity<Object> checkonline1() {
-        LinkedList<UserDTO> list = FriendRecommend2.ListRecommend(1);
-        return new ResponseEntity<>(list,HttpStatus.OK);
-    }
+//    @GetMapping("/check-valid-acc")
+//    public ResponseEntity<Object> checkonline1() {
+//        LinkedList<UserDTO> list = FriendRecommend2.ListRecommend(1);
+//        return new ResponseEntity<>(list,HttpStatus.OK);
+//    }
 
     @PostMapping("/create-new-user")
     public ResponseEntity<Object> createUser(@RequestBody UserCreateDTO user) {
