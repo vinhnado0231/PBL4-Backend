@@ -37,8 +37,9 @@ public class GroupController {
     }
 
     @PostMapping("/create-group")
-    public ResponseEntity<Group> createGroup(@RequestBody List<Long> idUserList, Authentication authentication) {
+    public ResponseEntity<Group> createGroup(@RequestBody List<Long> idUserList,@RequestBody String nameGroup ,Authentication authentication) {
         Group group = new Group();
+        group.setNameGroup(nameGroup);
         group.setSingle(false);
         groupService.saveGroup(group);
         List<User> users = new ArrayList<>();
