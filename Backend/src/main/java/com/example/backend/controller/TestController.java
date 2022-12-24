@@ -225,10 +225,12 @@ public class TestController {
     public static LinkedList<UserDTO> getListRecommendByIdUser(double userSimilarityMatrix[][], LinkedList<UserDTO> listUser, int idUser) {
         LinkedList<UserDTO> list = new LinkedList<>();
         HashMap<Integer, Double> listUserAndValue = new HashMap<Integer, Double>();
+//        System.out.println("===========");
         for (int id = 0; id < listUser.size(); id++) {
-            listUserAndValue.put(id, userSimilarityMatrix[idUser][id]);
+            listUserAndValue.put(id, userSimilarityMatrix[idUser-1][id]);
+//            System.out.println(userSimilarityMatrix[idUser-1][id]);
         }
-//        System.out.println("========");
+//        System.out.println("===========");
         HashMap<Integer, Double> sortlist = sortByValue(listUserAndValue);
         for (Map.Entry<Integer, Double> mapElement : sortlist.entrySet()) {
             Integer key = mapElement.getKey();
@@ -236,7 +238,7 @@ public class TestController {
 
            if(value>0){
                System.out.println("ID : "+key+", Value : "+value);
-               list.add(listUser.get(key-1));
+               list.add(listUser.get(key));
            }
         }
 
@@ -304,18 +306,20 @@ public class TestController {
         }
         int DateOfBirthUser=Integer.parseInt(namsinh.trim());
         LinkedList<UserDTO> list = getListRecommendByIdUser(userSimilarityMatrix, users, iduser);
-
+        LinkedList<UserDTO> listFilter=new LinkedList<>();
         for (int i = 0; i < list.size(); i++) {
             System.out.println("ID : " + list.get(i).getIdUser() + ", Ngay Sinh :" + list.get(i).getDateOfBirthUser());
             int DateOfBirth=Integer.parseInt(list.get(i).getDateOfBirthUser().trim());
-            if(Math.abs(DateOfBirth-DateOfBirthUser)>10){
-                list.remove(i);
+            if(Math.abs(DateOfBirth-DateOfBirthUser)<20){
+                listFilter.add(list.get(i));
             }
         }
-        list.remove(index);
-        for (int i = 0; i < list.size(); i++) {
-            System.out.println("ID : " + list.get(i).getIdUser() + ", Ngay Sinh :" + list.get(i).getDateOfBirthUser());
+
+        System.out.printf("Okkkkkkkkkkkkkkkkkkkkkk");
+        for (int i = 0; i < listFilter.size(); i++) {
+            System.out.println("ID : " + listFilter.get(i).getIdUser() + ", Ngay Sinh :" + listFilter.get(i).getDateOfBirthUser());
         }
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
