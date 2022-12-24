@@ -91,7 +91,7 @@ public class FriendController {
 
     @GetMapping("/recommend-friend")
     public ResponseEntity<Object> RecommendHandler(Authentication authentication) {
-        return new ResponseEntity<>(friendService.getListFriendRecommend(accountService.getIdUserByUsername(authentication.getName())), HttpStatus.OK);
+        return new ResponseEntity<>(friendService.getListFriendRecommend(1), HttpStatus.OK);
     }
 
 //    @GetMapping("/get-status-friend")
