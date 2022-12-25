@@ -2,19 +2,20 @@ package com.example.backend.service.impl;
 
 import com.example.backend.dto.FriendDTO;
 import com.example.backend.dto.FriendStatusDTO;
-import com.example.backend.dto.UserDTO;
 import com.example.backend.model.Friend;
 import com.example.backend.model.User;
 import com.example.backend.repository.IFriendRepository;
 import com.example.backend.service.IFriendService;
 import com.example.backend.service.IUserService;
-import com.example.backend.ultil.FriendRequest.FriendRecommend1;
-import com.example.backend.ultil.FriendRequest.FriendRecommend2;
+import com.example.backend.ultil.FriendRequest.FriendRecommendResult;
+import com.example.backend.ultil.FriendRequest.RecommendHandler1;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 @Service
 public class FriendService implements IFriendService {
@@ -86,41 +87,33 @@ public class FriendService implements IFriendService {
         return friendRepository.mutualFriend(idUser1, idUser2);
     }
 
+    @Autowired
+    private FriendRecommendResult friendRecommendResult;
     @Override
-    public List<FriendDTO> getListFriendRecommend(long idUSer) {
-        List<FriendDTO> result = new ArrayList<>();
-        List<UserDTO> listFriendRecommend1 = FriendRecommend1.getListRecommendAfterFilter((int) idUSer);
-        List<FriendDTO> result1 = new ArrayList<>();
-        for (UserDTO userDTO : listFriendRecommend1) {
-            User user = userService.getUserByIdUser(userDTO.getIdUser());
-            result1.add(new FriendDTO(user.getIdUser(), user.getNameUser(), user.getAvatar(), (int) friendRepository.mutualFriend(idUSer, user.getIdUser())));
-        }
-        List<UserDTO> listFriendRecommend2 = FriendRecommend2.ListRecommend((int) idUSer);
-        List<FriendDTO> result2 = new ArrayList<>();
-        for (int i = 0; i < listFriendRecommend2.size(); i++) {
-            User user = userService.getUserByIdUser(listFriendRecommend1.get(i).getIdUser());
-            result2.add(new FriendDTO(user.getIdUser(), user.getNameUser(), user.getAvatar(), (int) friendRepository.mutualFriend(idUSer, user.getIdUser())));
-        }
-
-//        for (int i = 0; i < result1.size(); i++) {
-//            for (int j = 0; i < result2.size(); j++) {
-//                if(result1.get(i).getIdFriend()==(result2.get(j).getIdFriend())){
-//                    User user = userService.getUserByIdUser(result2.get(j).getIdFriend());
-//                    result.add(new FriendDTO(user.getIdUser(), user.getNameUser(), user.getAvatar(), (int) friendRepository.mutualFriend(idUSer, user.getIdUser())));
-//                }
+    public List<FriendDTO> getListFriendRecommend(long idUSer) throws InterruptedException, ExecutionException {
+        return friendRecommendResult.getListRecommendFriend((int)idUSer);
+//        List<FriendDTO> result = new ArrayList<>();
+//        CompletableFuture<Integer> futureData1 = RecommendHandler1.getListFriendRequest1((int) idUSer).getData();
+//        CompletableFuture<Integer> futureData2 = getListFriendRequest2((int) idUSer).getData();
+////        for (int i = 0; i < result1.size(); i++) {
+////            for (int j = 0; i < result2.size(); j++) {
+////                if(result1.get(i).getIdFriend()==(result2.get(j).getIdFriend())){
+////                    User user = userService.getUserByIdUser(result2.get(j).getIdFriend());
+////                    result.add(new FriendDTO(user.getIdUser(), user.getNameUser(), user.getAvatar(), (int) friendRepository.mutualFriend(idUSer, user.getIdUser())));
+////                }
+////            }
+////        }
+//        for (FriendDTO friendDTO : result1) {
+//            if (!result.contains(friendDTO)) {
+//                result.add(friendDTO);
 //            }
 //        }
-        for (FriendDTO friendDTO : result1) {
-            if (!result.contains(friendDTO)) {
-                result.add(friendDTO);
-            }
-        }
-//        for (int i = 0; i < result2.size(); i++) {
-//            if(!result.contains(result2.get(i))){
-//                result.add(result2.get(i));
-//            }
-//        }
-        return result.stream().distinct().toList();
+////        for (int i = 0; i < result2.size(); i++) {
+////            if(!result.contains(result2.get(i))){
+////                result.add(result2.get(i));
+////            }
+////        }
+//        return result.stream().distinct().toList();
 
     }
 }

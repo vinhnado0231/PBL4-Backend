@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 @RestController
 @CrossOrigin("*")
@@ -90,7 +91,7 @@ public class FriendController {
     }
 
     @GetMapping("/recommend-friend")
-    public ResponseEntity<Object> RecommendHandler(Authentication authentication) {
+    public ResponseEntity<Object> RecommendHandler(Authentication authentication) throws ExecutionException, InterruptedException {
         return new ResponseEntity<>(friendService.getListFriendRecommend(accountService.getIdUserByUsername(authentication.getName())), HttpStatus.OK);
     }
 

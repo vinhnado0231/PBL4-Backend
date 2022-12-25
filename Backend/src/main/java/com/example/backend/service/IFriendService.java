@@ -9,6 +9,7 @@ import com.example.backend.model.User;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public interface IFriendService {
     void createFriendRequest(User user,long idFriend);
@@ -30,7 +31,8 @@ public interface IFriendService {
 
     boolean isFriend(long idUser,long idFriend);
 
-    List<FriendDTO> getListFriendRecommend(long idUSer);
+    List<FriendDTO> getListFriendRecommend(long idUSer) throws InterruptedException, ExecutionException;
 
     long getMutualFriend(long idUser1, long idUser2);
+
 }
