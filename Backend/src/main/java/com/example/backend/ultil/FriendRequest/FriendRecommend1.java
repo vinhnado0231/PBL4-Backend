@@ -39,7 +39,7 @@ public class FriendRecommend1 {
         // chú ý thứ tự user thay đổi khi ta xóa bớt 1 user
         // nên phải lấy id
         int k = 10;//lấy k giá trị lớn nhất
-        HashMap<Integer, Double> listUserAndValue = new HashMap<Integer, Double>();
+        HashMap<Integer, Double> listUserAndValue = new HashMap<>();
         for (int id = 0; id < numUser; id++) {
             if (normalizedMatrix[idItem][id] != 0) {
                 listUserAndValue.put(id, userSimilarity[idUser][id]);
@@ -71,7 +71,7 @@ public class FriendRecommend1 {
         for (int i = 0; i < numItem; i++) {
             for (int j = 0; j < numUser; j++) {
                 if (normalizedMatrix[i][j] == 0) {
-                    Double rs = ratingUI(userSimilarity, normalizedMatrix, numUser, j, i);
+                    double rs = ratingUI(userSimilarity, normalizedMatrix, numUser, j, i);
 //                    System.out.println("Du doan ["+i+"]["+j+"] = "+rs);
                     normalizedMatrix[i][j] = rs;
                 }
@@ -95,18 +95,13 @@ public class FriendRecommend1 {
     public static HashMap<Integer, Double> sortByValue(HashMap<Integer, Double> hm) {
         // Create a list from elements of HashMap
         List<Map.Entry<Integer, Double>> list =
-                new LinkedList<Map.Entry<Integer, Double>>(hm.entrySet());
+                new LinkedList<>(hm.entrySet());
 
         // Sort the list
-        Collections.sort(list, new Comparator<Map.Entry<Integer, Double>>() {
-            public int compare(Map.Entry<Integer, Double> o1,
-                               Map.Entry<Integer, Double> o2) {
-                return (o2.getValue()).compareTo(o1.getValue());
-            }
-        });
+        Collections.sort(list, (o1, o2) -> (o2.getValue()).compareTo(o1.getValue()));
 
         // put data from sorted list to hashmap
-        HashMap<Integer, Double> temp = new LinkedHashMap<Integer, Double>();
+        HashMap<Integer, Double> temp = new LinkedHashMap<>();
         for (Map.Entry<Integer, Double> aa : list) {
             temp.put(aa.getKey(), aa.getValue());
         }
@@ -203,23 +198,28 @@ public class FriendRecommend1 {
 
     public static LinkedList<UserDTO> getListRecommendAfterFilter(int idUser) {
         String namsinh = "";
-        int index = 0;
-        for (int i = 0; i < users.size(); i++) {
-            if (users.get(i).getIdUser() == idUser) {
-                namsinh = users.get(i).getDateOfBirthUser();
+        for (UserDTO user : users) {
+            if (user.getIdUser() == idUser) {
+                namsinh = user.getDateOfBirthUser();
                 break;
             }
         }
         int DateOfBirthUser = Integer.parseInt(namsinh.trim());
         LinkedList<UserDTO> list = getListRecommendByIdUser(userSimilarityMatrix, users, idUser);
         LinkedList<UserDTO> listFilter = new LinkedList<>();
-        for (int i = 0; i < list.size(); i++) {
-            int DateOfBirth = Integer.parseInt(list.get(i).getDateOfBirthUser().trim());
+        for (UserDTO userDTO : list) {
+            int DateOfBirth = Integer.parseInt(userDTO.getDateOfBirthUser().trim());
             if (Math.abs(DateOfBirth - DateOfBirthUser) < 20) {
-                listFilter.add(list.get(i));
+                listFilter.add(userDTO);
             }
         }
-        return list;
+        for (UserDTO userDTO : listFilter) {
+            if(userDTO.getIdUser()==idUser){
+                listFilter.remove(userDTO);
+                break;
+            }
+        }
+        return listFilter;
     }
 
     @Async

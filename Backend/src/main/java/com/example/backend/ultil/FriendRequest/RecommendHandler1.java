@@ -26,6 +26,9 @@ public class RecommendHandler1 {
         List<FriendDTO> result1 = new ArrayList<>();
         for (UserDTO userDTO : listFriendRecommend1) {
             User user = userService.getUserByIdUser(userDTO.getIdUser());
+            if(friendService.isFriend(idUSer,user.getIdUser())){
+                continue;
+            }
             System.out.println("Luồng 1: id_user= " +user.getIdUser());
             result1.add(new FriendDTO(user.getIdUser(), user.getNameUser(), user.getAvatar(), (int) friendService.getMutualFriend(idUSer, user.getIdUser())));
         }
