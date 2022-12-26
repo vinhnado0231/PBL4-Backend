@@ -37,20 +37,23 @@ public class GroupController {
     }
 
     @PostMapping("/create-group")
-    public ResponseEntity<Group> createGroup(@RequestBody List<Long> idUserList,@RequestBody String nameGroup ,Authentication authentication) {
+    public ResponseEntity<Group> createGroup(@RequestBody List<Long> idUserList,Authentication authentication) {
         Group group = new Group();
-        group.setNameGroup(nameGroup);
         group.setSingle(false);
-        groupService.saveGroup(group);
+        String nameGroup= "";
         List<User> users = new ArrayList<>();
         users.add(userService.getUserByIdUser(accountService.getIdUserByUsername(authentication.getName())));
         User user;
         for (Long id : idUserList) {
             user = userService.getUserByIdUser(id);
             if(user != null){
+                nameGroup +=user.getNameUser()+", ";
                 users.add(user);
             }
         }
+        nameGroup= nameGroup.substring(0, nameGroup.length() - 2).replaceAll("\\s{2,}", " ").trim();;
+        group.setNameGroup(nameGroup);
+        groupService.saveGroup(group);
         groupUserService.addUserToGroup(users, group, users.get(0).getIdUser());
         return new ResponseEntity<>(HttpStatus.OK);
     }
