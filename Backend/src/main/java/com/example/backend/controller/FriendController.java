@@ -69,7 +69,7 @@ public class FriendController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/delete-friend")
+    @DeleteMapping("/delete-friend")
     public ResponseEntity<Object> deleteFriend(@RequestParam Long idFriend, Authentication authentication) {
         long idUser = accountService.getIdUserByUsername(authentication.getName());
         friendService.deleteFriend(friendService.getFriendByIdFriendAndIdUser(idUser, idFriend));
@@ -102,9 +102,4 @@ public class FriendController {
         return new ResponseEntity<>(friendService.getListFriendRecommend(accountService.getIdUserByUsername(authentication.getName())), HttpStatus.OK);
     }
 
-//    @GetMapping("/get-status-friend")
-//    public ResponseEntity<List<Friend>> getStatusFriend(Authentication authentication) {
-//        List<FriendStatusDTO> friends;
-//        return new ResponseEntity<>(friends, HttpStatus.OK);
-//    }
 }

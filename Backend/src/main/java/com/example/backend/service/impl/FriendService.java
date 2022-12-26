@@ -1,20 +1,19 @@
 package com.example.backend.service.impl;
 
 import com.example.backend.dto.FriendDTO;
-import com.example.backend.dto.FriendStatusDTO;
 import com.example.backend.model.Friend;
 import com.example.backend.model.User;
+import com.example.backend.repository.IAccountRepository;
 import com.example.backend.repository.IFriendRepository;
+import com.example.backend.service.IAccountService;
 import com.example.backend.service.IFriendService;
 import com.example.backend.service.IUserService;
 import com.example.backend.ultil.FriendRequest.FriendRecommendResult;
-import com.example.backend.ultil.FriendRequest.RecommendHandler1;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 @Service
@@ -24,6 +23,9 @@ public class FriendService implements IFriendService {
 
     @Autowired
     private IUserService userService;
+
+    @Autowired
+    private IAccountService accountService;
 
     @Override
     public void createFriendRequest(User user, long idFriend) {
@@ -45,7 +47,7 @@ public class FriendService implements IFriendService {
         ArrayList<FriendDTO> result = new ArrayList<>();
         for (Friend friend : friends) {
             User user = userService.getUserByIdUser(friend.getIdFriend());
-            result.add(new FriendDTO(user.getIdUser(), user.getNameUser(), user.getAvatar(), null));
+            result.add(new FriendDTO(user.getIdUser(), user.getNameUser(), user.getAvatar(), null,accountService.checkStatusByIdUser(friend.getIdFriend())));
         }
         return result;
     }
@@ -71,13 +73,6 @@ public class FriendService implements IFriendService {
     }
 
     @Override
-    public List<FriendStatusDTO> getStatusFriend(long idUserByUsername) {
-        List<FriendStatusDTO> friendStatusDTOList = new ArrayList<>();
-
-        return friendStatusDTOList;
-    }
-
-    @Override
     public boolean isFriend(long idUser, long idFriend) {
         return friendRepository.isFriend(idUser, idFriend) != null;
     }
@@ -92,28 +87,5 @@ public class FriendService implements IFriendService {
     @Override
     public List<FriendDTO> getListFriendRecommend(long idUSer) throws InterruptedException, ExecutionException {
         return friendRecommendResult.getListRecommendFriend((int)idUSer);
-//        List<FriendDTO> result = new ArrayList<>();
-//        CompletableFuture<Integer> futureData1 = RecommendHandler1.getListFriendRequest1((int) idUSer).getData();
-//        CompletableFuture<Integer> futureData2 = getListFriendRequest2((int) idUSer).getData();
-////        for (int i = 0; i < result1.size(); i++) {
-////            for (int j = 0; i < result2.size(); j++) {
-////                if(result1.get(i).getIdFriend()==(result2.get(j).getIdFriend())){
-////                    User user = userService.getUserByIdUser(result2.get(j).getIdFriend());
-////                    result.add(new FriendDTO(user.getIdUser(), user.getNameUser(), user.getAvatar(), (int) friendRepository.mutualFriend(idUSer, user.getIdUser())));
-////                }
-////            }
-////        }
-//        for (FriendDTO friendDTO : result1) {
-//            if (!result.contains(friendDTO)) {
-//                result.add(friendDTO);
-//            }
-//        }
-////        for (int i = 0; i < result2.size(); i++) {
-////            if(!result.contains(result2.get(i))){
-////                result.add(result2.get(i));
-////            }
-////        }
-//        return result.stream().distinct().toList();
-
     }
 }

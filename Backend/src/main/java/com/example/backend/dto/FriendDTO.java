@@ -10,4 +10,5 @@ public class FriendDTO {
     private String name;
     private String avatar;
     private Integer mutualFriends;
+    private Boolean status ;
 }

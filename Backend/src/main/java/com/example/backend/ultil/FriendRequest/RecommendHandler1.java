@@ -30,7 +30,7 @@ public class RecommendHandler1 {
                 continue;
             }
             System.out.println("Luồng 1: id_user= " +user.getIdUser());
-            result1.add(new FriendDTO(user.getIdUser(), user.getNameUser(), user.getAvatar(), (int) friendService.getMutualFriend(idUSer, user.getIdUser())));
+            result1.add(new FriendDTO(user.getIdUser(), user.getNameUser(), user.getAvatar(), (int) friendService.getMutualFriend(idUSer, user.getIdUser()),null));
         }
         return new AsyncResult<>(result1).completable();
     }

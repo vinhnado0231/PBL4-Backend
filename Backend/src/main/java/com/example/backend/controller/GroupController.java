@@ -13,9 +13,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import static com.example.backend.ultil.ScheduledTasks.userOnline;
 
 
 @RestController
@@ -33,7 +36,14 @@ public class GroupController {
 
     @GetMapping("/get-all-group")
     public ResponseEntity<ArrayList<GroupDTO>> getAllGroupByIdUser(Authentication authentication) {
-        ArrayList<GroupDTO> groups = groupService.findGroupByIdUser(accountService.getIdUserByUsername(authentication.getName()));
+        long idUser = accountService.getIdUserByUsername(authentication.getName());
+        new Thread(() -> {
+            if(!userOnline.containsKey(idUser)){
+                userOnline.put(idUser, LocalDateTime.now().plusMinutes(1));
+                accountService.changeStatusByIdUser( idUser, true);
+            }
+        }).start();
+        ArrayList<GroupDTO> groups = groupService.findGroupByIdUser(idUser);
         return new ResponseEntity<>(groups, HttpStatus.OK);
     }
 
@@ -41,20 +51,19 @@ public class GroupController {
     public ResponseEntity<Group> createGroup(@RequestBody List<Long> idUserList, Authentication authentication) {
         Group group = new Group();
         group.setSingle(false);
-        String nameGroup = "";
+        StringBuilder nameGroup = new StringBuilder();
         List<User> users = new ArrayList<>();
         users.add(userService.getUserByIdUser(accountService.getIdUserByUsername(authentication.getName())));
         User user;
         for (Long id : idUserList) {
             user = userService.getUserByIdUser(id);
             if (user != null) {
-                nameGroup += user.getNameUser() + ", ";
+                nameGroup.append(user.getNameUser()).append(", ");
                 users.add(user);
             }
         }
-        nameGroup = nameGroup.substring(0, nameGroup.length() - 2).replaceAll("\\s{2,}", " ").trim();
-        ;
-        group.setNameGroup(nameGroup);
+        nameGroup = new StringBuilder(nameGroup.substring(0, nameGroup.length() - 2).replaceAll("\\s{2,}", " ").trim());
+        group.setNameGroup(nameGroup.toString());
         groupService.saveGroup(group);
         groupUserService.addUserToGroup(users, group, users.get(0).getIdUser());
         return new ResponseEntity<>(HttpStatus.OK);

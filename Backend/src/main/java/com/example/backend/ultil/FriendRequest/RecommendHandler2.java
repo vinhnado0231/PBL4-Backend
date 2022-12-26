@@ -28,7 +28,7 @@ public class RecommendHandler2 {
         for (UserDTO userDTO : listFriendRecommend2) {
             User user = userService.getUserByIdUser(userDTO.getIdUser());
             System.out.println("Luồng 2: id_user= " +user.getIdUser());
-            result2.add(new FriendDTO(user.getIdUser(), user.getNameUser(), user.getAvatar(), (int) friendService.getMutualFriend(idUSer, user.getIdUser())));
+            result2.add(new FriendDTO(user.getIdUser(), user.getNameUser(), user.getAvatar(), (int) friendService.getMutualFriend(idUSer, user.getIdUser()),null));
         }
         return new AsyncResult<>(result2).completable();
     }

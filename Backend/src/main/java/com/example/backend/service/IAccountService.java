@@ -8,6 +8,8 @@ public interface IAccountService {
 
     Account getAccountByUsername(String username);
 
+    Account getAccountByIdUser(long idUser);
+
     void saveForgotPassword(Account account, String password);
 
     void updateToken(Account account);
@@ -19,7 +21,7 @@ public interface IAccountService {
     void saveAccount(Account account);
 
     long getIdUserByUsername(String username);
-
-    void changeTimeOff(Account account);
+    Boolean checkStatusByIdUser(long idUser);
+    void changeStatusByIdUser(long idUser,boolean status);
 
 }

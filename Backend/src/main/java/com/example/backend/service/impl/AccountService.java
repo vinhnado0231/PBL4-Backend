@@ -1,6 +1,5 @@
 package com.example.backend.service.impl;
 
-import com.example.backend.controller.AccountController;
 import com.example.backend.model.Account;
 import com.example.backend.repository.IAccountRepository;
 import com.example.backend.repository.IUserRepository;
@@ -49,6 +48,11 @@ public class AccountService implements IAccountService, UserDetailsService {
     }
 
     @Override
+    public Account getAccountByIdUser(long idUser) {
+        return accountRepository.findAccountByIdUser(idUser);
+    }
+
+    @Override
     public void saveForgotPassword(Account account, String password) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(password);
@@ -91,10 +95,14 @@ public class AccountService implements IAccountService, UserDetailsService {
     }
 
     @Override
-    public void changeTimeOff(Account account) {
-        account.setTimeOff(LocalDateTime.now().toString());
+    public void changeStatusByIdUser(long idUser, boolean status) {
+        Account account = getAccountByIdUser(idUser);
+        account.setStatus(status);
         saveAccount(account);
     }
 
-
+    @Override
+    public Boolean checkStatusByIdUser(long idUser) {
+        return accountRepository.checkStatusByIdUser(idUser);
+    }
 }
