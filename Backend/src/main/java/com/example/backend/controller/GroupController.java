@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -37,21 +38,22 @@ public class GroupController {
     }
 
     @PostMapping("/create-group")
-    public ResponseEntity<Group> createGroup(@RequestBody List<Long> idUserList,Authentication authentication) {
+    public ResponseEntity<Group> createGroup(@RequestBody List<Long> idUserList, Authentication authentication) {
         Group group = new Group();
         group.setSingle(false);
-        String nameGroup= "";
+        String nameGroup = "";
         List<User> users = new ArrayList<>();
         users.add(userService.getUserByIdUser(accountService.getIdUserByUsername(authentication.getName())));
         User user;
         for (Long id : idUserList) {
             user = userService.getUserByIdUser(id);
-            if(user != null){
-                nameGroup +=user.getNameUser()+", ";
+            if (user != null) {
+                nameGroup += user.getNameUser() + ", ";
                 users.add(user);
             }
         }
-        nameGroup= nameGroup.substring(0, nameGroup.length() - 2).replaceAll("\\s{2,}", " ").trim();;
+        nameGroup = nameGroup.substring(0, nameGroup.length() - 2).replaceAll("\\s{2,}", " ").trim();
+        ;
         group.setNameGroup(nameGroup);
         groupService.saveGroup(group);
         groupUserService.addUserToGroup(users, group, users.get(0).getIdUser());
@@ -59,7 +61,7 @@ public class GroupController {
     }
 
     @PostMapping("/add-user-to-group")
-    public ResponseEntity<Group> addUserToGroup(@RequestBody List<Long> idUserList, @RequestParam Long idGroup) {
+    public ResponseEntity<Object> addUserToGroup(@RequestBody List<Long> idUserList, @RequestParam Long idGroup) {
         Group group = groupService.findGroupById(idGroup);
         List<User> users = new ArrayList<>();
         for (Long id : idUserList) {
@@ -67,5 +69,22 @@ public class GroupController {
         }
         groupUserService.addUserToGroup(users, group, null);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/update-group")
+    public ResponseEntity<Object> updateGroup(@RequestBody Map<String, String> json, @RequestParam Long idGroup, Authentication authentication) {
+        Group group = groupService.findGroupById(idGroup);
+        if (groupUserService.getGroupUserByIdUserIdGroup(accountService.getIdUserByUsername(authentication.getName()), idGroup).getRoleGroup() == 1) {
+            if (json.get("nameGroup") != null) {
+                group.setNameGroup(json.get("nameGroup"));
+            }
+            if (json.get("avt") != null) {
+                group.setAvatarGroup(json.get("avt"));
+            }
+            groupService.saveGroup(group);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+        }
     }
 }

@@ -28,6 +28,7 @@ public class GroupUserService implements IGroupUserService {
                 GroupUser groupUser = new GroupUser();
                 groupUser.setGroup(group);
                 groupUser.setUser(user);
+                groupUser.setRoleGroup(2);
                 groupUserRepository.save(groupUser);
             }
         }
