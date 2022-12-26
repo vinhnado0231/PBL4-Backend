@@ -2,9 +2,9 @@ package com.example.backend.controller;
 
 import com.example.backend.dto.FriendDTO;
 import com.example.backend.model.Friend;
-import com.example.backend.repository.IFriendRepository;
+import com.example.backend.model.Group;
+import com.example.backend.model.User;
 import com.example.backend.service.*;
-import com.example.backend.ultil.FriendRequest.FriendRecommend1;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +12,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -55,6 +54,14 @@ public class FriendController {
             friend = friendService.getFriendByIdFriendAndIdUser(idFriend, idUser);
             friend.setIsrequest(false);
             friendService.updateFriend(friend);
+
+            Group group = new Group();
+            group.setSingle(true);
+            groupService.saveGroup(group);
+            List<User> users = new ArrayList<>();
+            users.add(userService.getUserByIdUser(idUser));
+            users.add(userService.getUserByIdUser(idFriend));
+            groupUserService.addUserToGroup(users, group, null);
         } else {
             friendService.deleteFriend(friendService.getFriendByIdFriendAndIdUser(idUser, idFriend));
             friendService.deleteFriend(friendService.getFriendByIdFriendAndIdUser(idFriend, idUser));
@@ -86,7 +93,7 @@ public class FriendController {
     @GetMapping("/search-friend")
     public ResponseEntity<List<Friend>> searchFriend(String search, Authentication authentication) {
         long idUser = accountService.getIdUserByUsername(authentication.getName());
-        List<Friend> friends = friendService.searchFriend(idUser,search);
+        List<Friend> friends = friendService.searchFriend(idUser, search);
         return new ResponseEntity<>(friends, HttpStatus.OK);
     }
 
