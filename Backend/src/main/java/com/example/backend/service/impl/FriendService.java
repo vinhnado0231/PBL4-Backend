@@ -51,7 +51,12 @@ public class FriendService implements IFriendService {
     @Override
     public List<FriendDTO> getAllFriendRequestByIdUser(long idUser) {
         List<Friend> friends = friendRepository.findAllFriendRequestByIdUser(idUser);
-        return changeFriendToFriendDTO(friends,idUser);
+        ArrayList<FriendDTO> result = new ArrayList<>();
+        for (Friend friend : friends) {
+            User user = friend.getUser();
+            result.add(new FriendDTO(user.getIdUser(), user.getNameUser(), user.getAvatar(), (int) getMutualFriend(idUser, friend.getIdFriend()), accountService.checkStatusByIdUser(friend.getIdFriend())));
+        }
+        return result;
     }
 
     @Override

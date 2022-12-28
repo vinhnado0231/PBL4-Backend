@@ -9,8 +9,6 @@ import java.util.List;
 
 @Repository
 public interface IFriendRepository extends JpaRepository<Friend, Long> {
-    List<Friend> findAllByIdFriend(long idUser);
-
     @Query(value = "select * from friend where id_user=? and is_request=false", nativeQuery = true)
     List<Friend> findAllFriendByIdUser(long idUser);
 
