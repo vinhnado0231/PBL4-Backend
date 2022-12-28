@@ -84,9 +84,9 @@ public class FriendController {
     }
 
     @GetMapping("/get-all-friend-request")
-    public ResponseEntity<List<Friend>> getAllFriendRequest(Authentication authentication) {
+    public ResponseEntity<List<FriendDTO>> getAllFriendRequest(Authentication authentication) {
         long idUser = accountService.getIdUserByUsername(authentication.getName());
-        List<Friend> friends = friendService.getAllFriendRequestByIdUser(idUser);
+        List<FriendDTO> friends = friendService.getAllFriendRequestByIdUser(idUser);
         return new ResponseEntity<>(friends, HttpStatus.OK);
     }
 
@@ -101,5 +101,4 @@ public class FriendController {
     public ResponseEntity<Object> RecommendHandler(Authentication authentication) throws ExecutionException, InterruptedException {
         return new ResponseEntity<>(friendService.getListFriendRecommend(accountService.getIdUserByUsername(authentication.getName())), HttpStatus.OK);
     }
-
 }

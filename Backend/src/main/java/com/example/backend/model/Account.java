@@ -36,9 +36,6 @@ public class Account {
     @JsonBackReference
     private User user;
 
-    @OneToMany(mappedBy = "account")
-    private List<LoginHistory> loginHistoryList;
-
     public Account(String username, String password) {
         this.username = username;
         this.password = password;

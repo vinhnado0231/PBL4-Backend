@@ -31,7 +31,6 @@ public class AccountService implements IAccountService, UserDetailsService {
     @Transactional
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         Account account = accountRepository.findByUsername(s);
-
         if (account == null) {
             throw new UsernameNotFoundException("account not found");
         }
