@@ -35,10 +35,8 @@ public class FriendController {
         long idUser = accountService.getIdUserByUsername(authentication.getName());
         if (request) {
             friendService.createFriendRequest(userService.getUserByIdUser(idUser), idFriend);
-            friendService.createFriendRequest(userService.getUserByIdUser(idFriend), idUser);
         } else {
-            friendService.deleteFriend(friendService.getFriendByIdFriendAndIdUser(idUser, idFriend));
-            friendService.deleteFriend(friendService.getFriendByIdFriendAndIdUser(idFriend, idUser));
+            friendService.deleteFriend(friendService.getFriendByIdUserAndIdFriend(idUser, idFriend));
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -48,10 +46,12 @@ public class FriendController {
         long idUser = accountService.getIdUserByUsername(authentication.getName());
         Friend friend;
         if (reply) {
-            friend = friendService.getFriendByIdFriendAndIdUser(idUser, idFriend);
+            friend = friendService.getFriendByIdUserAndIdFriend(idFriend, idUser);
             friend.setIsrequest(false);
             friendService.updateFriend(friend);
-            friend = friendService.getFriendByIdFriendAndIdUser(idFriend, idUser);
+
+            friendService.createFriendRequest(userService.getUserByIdUser(idUser), idFriend);
+            friend = friendService.getFriendByIdUserAndIdFriend(idUser, idFriend);
             friend.setIsrequest(false);
             friendService.updateFriend(friend);
 
@@ -63,8 +63,8 @@ public class FriendController {
             users.add(userService.getUserByIdUser(idFriend));
             groupUserService.addUserToGroup(users, group, null);
         } else {
-            friendService.deleteFriend(friendService.getFriendByIdFriendAndIdUser(idUser, idFriend));
-            friendService.deleteFriend(friendService.getFriendByIdFriendAndIdUser(idFriend, idUser));
+//            friendService.deleteFriend(friendService.getFriendByIdFriendAndIdUser(idUser, idFriend));
+            friendService.deleteFriend(friendService.getFriendByIdUserAndIdFriend(idFriend, idUser));
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -72,8 +72,8 @@ public class FriendController {
     @DeleteMapping("/delete-friend")
     public ResponseEntity<Object> deleteFriend(@RequestParam Long idFriend, Authentication authentication) {
         long idUser = accountService.getIdUserByUsername(authentication.getName());
-        friendService.deleteFriend(friendService.getFriendByIdFriendAndIdUser(idUser, idFriend));
-        friendService.deleteFriend(friendService.getFriendByIdFriendAndIdUser(idFriend, idUser));
+        friendService.deleteFriend(friendService.getFriendByIdUserAndIdFriend(idUser, idFriend));
+        friendService.deleteFriend(friendService.getFriendByIdUserAndIdFriend(idFriend, idUser));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

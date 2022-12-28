@@ -19,7 +19,7 @@ public interface IFriendService {
     List<FriendDTO> getAllFriendRequestByIdUser(long idUser);
 
 
-    Friend getFriendByIdFriendAndIdUser(long idUser,long idFriend);
+    Friend getFriendByIdUserAndIdFriend(long idUser,long idFriend);
 
     void deleteFriend(Friend friend);
 

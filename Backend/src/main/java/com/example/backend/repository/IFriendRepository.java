@@ -14,7 +14,7 @@ public interface IFriendRepository extends JpaRepository<Friend, Long> {
     @Query(value = "select * from friend where id_user=? and is_request=false", nativeQuery = true)
     List<Friend> findAllFriendByIdUser(long idUser);
 
-    @Query(value = "select * from friend where id_user=? and is_request=true", nativeQuery = true)
+    @Query(value = "select * from friend where id_friend=? and is_request=true", nativeQuery = true)
     List<Friend> findAllFriendRequestByIdUser(long idUser);
 
     @Query(value = "select * from friend where id_user=? and id_friend=?", nativeQuery = true)
