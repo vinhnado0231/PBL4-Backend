@@ -3,7 +3,6 @@ package com.example.backend.service.impl;
 import com.example.backend.dto.FriendDTO;
 import com.example.backend.model.Friend;
 import com.example.backend.model.User;
-import com.example.backend.repository.IAccountRepository;
 import com.example.backend.repository.IFriendRepository;
 import com.example.backend.service.IAccountService;
 import com.example.backend.service.IFriendService;
@@ -26,6 +25,8 @@ public class FriendService implements IFriendService {
 
     @Autowired
     private IAccountService accountService;
+    @Autowired
+    private FriendRecommendResult friendRecommendResult;
 
     @Override
     public void createFriendRequest(User user, long idFriend) {
@@ -44,23 +45,13 @@ public class FriendService implements IFriendService {
     @Override
     public ArrayList<FriendDTO> getAllFriendByIdUser(long idUser) {
         List<Friend> friends = friendRepository.findAllFriendByIdUser(idUser);
-        ArrayList<FriendDTO> result = new ArrayList<>();
-        for (Friend friend : friends) {
-            User user = userService.getUserByIdUser(friend.getIdFriend());
-            result.add(new FriendDTO(user.getIdUser(), user.getNameUser(), user.getAvatar(), null,accountService.checkStatusByIdUser(friend.getIdFriend())));
-        }
-        return result;
+        return (ArrayList<FriendDTO>) changeFriendToFriendDTO(friends,idUser);
     }
 
     @Override
     public List<FriendDTO> getAllFriendRequestByIdUser(long idUser) {
         List<Friend> friends = friendRepository.findAllFriendRequestByIdUser(idUser);
-        ArrayList<FriendDTO> result = new ArrayList<>();
-        for (Friend friend : friends) {
-            User user = userService.getUserByIdUser(friend.getIdFriend());
-            result.add(new FriendDTO(user.getIdUser(), user.getNameUser(), user.getAvatar(), (int) getMutualFriend(idUser,friend.getIdFriend()),accountService.checkStatusByIdUser(friend.getIdFriend())));
-        }
-        return result;
+        return changeFriendToFriendDTO(friends,idUser);
     }
 
     @Override
@@ -88,10 +79,17 @@ public class FriendService implements IFriendService {
         return friendRepository.mutualFriend(idUser1, idUser2);
     }
 
-    @Autowired
-    private FriendRecommendResult friendRecommendResult;
     @Override
     public List<FriendDTO> getListFriendRecommend(long idUSer) throws InterruptedException, ExecutionException {
-        return friendRecommendResult.getListRecommendFriend((int)idUSer);
+        return friendRecommendResult.getListRecommendFriend((int) idUSer);
+    }
+
+    public List<FriendDTO> changeFriendToFriendDTO(List<Friend> friends,long idUser) {
+        ArrayList<FriendDTO> result = new ArrayList<>();
+        for (Friend friend : friends) {
+            User user = userService.getUserByIdUser(friend.getIdFriend());
+            result.add(new FriendDTO(user.getIdUser(), user.getNameUser(), user.getAvatar(), (int) getMutualFriend(idUser, friend.getIdFriend()), accountService.checkStatusByIdUser(friend.getIdFriend())));
+        }
+        return result;
     }
 }
