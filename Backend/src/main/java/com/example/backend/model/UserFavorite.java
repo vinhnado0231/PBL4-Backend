@@ -15,16 +15,16 @@ public class UserFavorite {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_user_favorite")
     private long idUserFavorite;
-    private Float an_uong;
-    private Float xem_phim;
-    private Float doc_sach;
-    private Float the_thao;
-    private Float ca_nhac;
-    private Float du_lich;
-    private Float coffee;
-    private Float choi_game;
-    private Float code;
-    private Float nau_an;
+    private Float an_uong=2.5f;
+    private Float xem_phim=2.5f;
+    private Float doc_sach=2.5f;
+    private Float the_thao=2.5f;
+    private Float ca_nhac=2.5f;
+    private Float du_lich=2.5f;
+    private Float coffee=2.5f;
+    private Float choi_game=2.5f;
+    private Float code=2.5f;
+    private Float nau_an=2.5f;
 
     @OneToOne(mappedBy = "userFavorite")
         @JsonBackReference
