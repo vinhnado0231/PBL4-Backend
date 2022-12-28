@@ -33,7 +33,7 @@ public class SecurityController {
         final UserDetails userDetails = accountService.loadUserByUsername(authenticationRequest.getUsername());
         final String token = jwtUtility.generateJwtToken(userDetails.getUsername());
         Account account = accountService.getAccountByUsername(authenticationRequest.getUsername());
-        return ResponseEntity.ok(new JwtResponse(token, account.getIdAccount(), account.getUsername()));
+        return ResponseEntity.ok(new JwtResponse(token, account.getUser().getIdUser(), account.getUsername()));
     }
 
     private void authenticate(String username, String password) throws Exception {
