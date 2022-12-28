@@ -93,6 +93,13 @@ public class FriendController {
         return new ResponseEntity<>(friends, HttpStatus.OK);
     }
 
+    @GetMapping("/get-all-my-friend-request")
+    public ResponseEntity<List<FriendDTO>> getAllMyFriendRequest(Authentication authentication) {
+        long idUser = accountService.getIdUserByUsername(authentication.getName());
+        List<FriendDTO> friends = friendService.getAllFriendRequestByIdUser(idUser);
+        return new ResponseEntity<>(friends, HttpStatus.OK);
+    }
+
     @GetMapping("/search-friend")
     public ResponseEntity<List<Friend>> searchFriend(String search, Authentication authentication) {
         long idUser = accountService.getIdUserByUsername(authentication.getName());

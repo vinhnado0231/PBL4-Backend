@@ -60,6 +60,12 @@ public class FriendService implements IFriendService {
     }
 
     @Override
+    public List<FriendDTO> getAllMyFriendRequestByIdUser(long idUser) {
+        List<Friend> friends = friendRepository.findAllMyFriendRequestByIdUser(idUser);
+        return changeFriendToFriendDTO(friends,idUser);
+    }
+
+    @Override
     public Friend getFriendByIdUserAndIdFriend(long idUser, long idFriend) {
         return friendRepository.findFriendByIdUserAndIdFriend(idUser, idFriend);
     }

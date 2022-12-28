@@ -18,6 +18,8 @@ public interface IFriendService {
 
     List<FriendDTO> getAllFriendRequestByIdUser(long idUser);
 
+    List<FriendDTO> getAllMyFriendRequestByIdUser(long idUser);
+
 
     Friend getFriendByIdUserAndIdFriend(long idUser,long idFriend);
 
