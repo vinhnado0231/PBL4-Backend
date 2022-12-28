@@ -78,8 +78,11 @@ public class FriendController {
     }
 
     @GetMapping("/get-all-friend")
-    public ResponseEntity<ArrayList<FriendDTO>> getAllFriend(Authentication authentication) {
-        ArrayList<FriendDTO> friends = friendService.getAllFriendByIdUser(accountService.getIdUserByUsername(authentication.getName()));
+    public ResponseEntity<ArrayList<FriendDTO>> getAllFriend(@RequestParam(required = false) Long idUser, Authentication authentication) {
+        if (idUser == null) {
+            idUser =accountService.getIdUserByUsername(authentication.getName());
+        }
+        ArrayList<FriendDTO> friends = friendService.getAllFriendByIdUser(idUser);
         return new ResponseEntity<>(friends, HttpStatus.OK);
     }
 
