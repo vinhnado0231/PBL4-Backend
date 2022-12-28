@@ -96,7 +96,7 @@ public class FriendController {
     @GetMapping("/get-all-my-friend-request")
     public ResponseEntity<List<FriendDTO>> getAllMyFriendRequest(Authentication authentication) {
         long idUser = accountService.getIdUserByUsername(authentication.getName());
-        List<FriendDTO> friends = friendService.getAllFriendRequestByIdUser(idUser);
+        List<FriendDTO> friends = friendService.getAllMyFriendRequestByIdUser(idUser);
         return new ResponseEntity<>(friends, HttpStatus.OK);
     }
 
