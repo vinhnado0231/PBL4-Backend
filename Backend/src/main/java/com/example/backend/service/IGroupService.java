@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public interface IGroupService {
     Group findGroupById(Long idGroup);
 
-    void saveGroup(Group group);
+    long saveGroup(Group group);
 
     ArrayList<GroupDTO> findGroupByIdUser(long idUser);
 

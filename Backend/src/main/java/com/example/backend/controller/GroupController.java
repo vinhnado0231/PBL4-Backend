@@ -37,14 +37,14 @@ public class GroupController {
     @GetMapping("/get-all-group")
     public ResponseEntity<ArrayList<GroupDTO>> getAllGroupByIdUser(Authentication authentication) {
         long idUser = accountService.getIdUserByUsername(authentication.getName());
-        try{
+        try {
             new Thread(() -> {
-                if(!userOnline.containsKey(idUser)){
+                if (!userOnline.containsKey(idUser)) {
                     userOnline.put(idUser, LocalDateTime.now().plusMinutes(1));
-                    accountService.changeStatusByIdUser( idUser, true);
+                    accountService.changeStatusByIdUser(idUser, true);
                 }
             }).start();
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
         ArrayList<GroupDTO> groups = groupService.findGroupByIdUser(idUser);
@@ -68,8 +68,8 @@ public class GroupController {
         }
         nameGroup = new StringBuilder(nameGroup.substring(0, nameGroup.length() - 2).replaceAll("\\s{2,}", " ").trim());
         group.setNameGroup(nameGroup.toString());
-        groupService.saveGroup(group);
-        groupUserService.addUserToGroup(users, group, users.get(0).getIdUser());
+        long idGroup = groupService.saveGroup(group);
+        groupUserService.addUserToGroup(users, groupService.findGroupById(idGroup), users.get(0).getIdUser());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

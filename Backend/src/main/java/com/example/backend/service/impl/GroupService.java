@@ -31,8 +31,10 @@ public class GroupService implements IGroupService {
     }
 
     @Override
-    public void saveGroup(Group group) {
+    public long saveGroup(Group group) {
         groupRepository.save(group);
+        groupRepository.flush();
+        return group.getIdGroup();
     }
 
     @Override
