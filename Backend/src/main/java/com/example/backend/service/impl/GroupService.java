@@ -51,6 +51,7 @@ public class GroupService implements IGroupService {
                 for (GroupUser groupUser1 : groupUsers) {
                     if(groupUser1.getUser().getIdUser() != idUser){
                         group.setNameGroup(groupUser1.getUser().getNameUser());
+                        break;
                     }
                 }
 //                group.setNameGroup();
