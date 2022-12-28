@@ -12,9 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @CrossOrigin("*")
@@ -36,7 +34,7 @@ public class MessageController {
     @GetMapping("/get-message")
     public ResponseEntity<List<Message>> getMessage(@RequestParam Long idGroup
             , @RequestParam(name = "page", required = false, defaultValue = "0") Integer page, Authentication authentication) {
-        if (groupService.chekUserInGroup(authentication.getName(), idGroup)) {
+        if (groupService.checkUserInGroup(authentication.getName(), idGroup)) {
             Pageable pageable = PageRequest.of(page, 20);
             Slice<Message> messageSlice = messageService.getAllMessageByIdGroup(idGroup, pageable);
             List<Message> messages = messageSlice.getContent();
@@ -47,7 +45,7 @@ public class MessageController {
 
     @PostMapping("/send-message")
     public ResponseEntity<Message> sendMessage(@RequestParam Long idGroup, @RequestBody Message message, Authentication authentication) {
-        if (groupService.chekUserInGroup(authentication.getName(), idGroup)) {
+        if (groupService.checkUserInGroup(authentication.getName(), idGroup)) {
             message.setGroup(groupService.findGroupById(idGroup));
             message.setIdSender(accountService.getIdUserByUsername(authentication.getName()));
             message.setTime(LocalDateTime.now());

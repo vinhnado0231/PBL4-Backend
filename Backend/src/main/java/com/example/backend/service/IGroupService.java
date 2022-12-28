@@ -2,6 +2,7 @@ package com.example.backend.service;
 
 import com.example.backend.dto.GroupDTO;
 import com.example.backend.model.Group;
+import com.example.backend.model.User;
 
 import java.util.ArrayList;
 
@@ -12,6 +13,5 @@ public interface IGroupService {
 
     ArrayList<GroupDTO> findGroupByIdUser(long idUser);
 
-    boolean chekUserInGroup(String username, long idGroup);
-
+    boolean checkUserInGroup(String username, long idGroup);
 }

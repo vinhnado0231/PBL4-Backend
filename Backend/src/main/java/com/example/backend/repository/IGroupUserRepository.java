@@ -15,4 +15,7 @@ public interface IGroupUserRepository extends JpaRepository<GroupUser, Long> {
 
     @Query(value = "select * from group_user where id_user = ?1 and id_group=?2", nativeQuery = true)
     GroupUser getGroupUserByIdUserIdGroup(long idUser, long idGroup);
+
+    @Query(value = "select * from group_user where id_group = ?1", nativeQuery = true)
+    List<GroupUser> getAllByIdGroup(long idGroup);
 }

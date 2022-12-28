@@ -46,6 +46,15 @@ public class GroupService implements IGroupService {
         Message message;
         for (GroupUser groupUser : groupUserList) {
             group = groupUser.getGroup();
+            if(group.isSingle()){
+                List<GroupUser> groupUsers = groupUserService.getAllByIdGroup(group.getIdGroup());
+                for (GroupUser groupUser1 : groupUsers) {
+                    if(groupUser1.getUser().getIdUser() != idUser){
+                        group.setNameGroup(groupUser1.getUser().getNameUser());
+                    }
+                }
+//                group.setNameGroup();
+            }
             message = messageService.findLastMessage(group);
             if (message == null) {
                 groupDTO = new GroupDTO(group.getIdGroup(), group.getNameGroup(), group.isSingle(), groupUser.getRoleGroup(),
@@ -72,7 +81,7 @@ public class GroupService implements IGroupService {
     }
 
     @Override
-    public boolean chekUserInGroup(String username, long idGroup) {
-        return groupUserService.getGroupUserByIdUserIdGroup(accountService.getIdUserByUsername(username), idGroup) != null ? true : false;
+    public boolean checkUserInGroup(String username, long idGroup) {
+        return groupUserService.getGroupUserByIdUserIdGroup(accountService.getIdUserByUsername(username), idGroup) != null;
     }
 }

@@ -17,4 +17,6 @@ public interface IGroupUserService {
     GroupUser getGroupUserByIdUserIdGroup(long idUser, long idGroup);
 
     List<GroupUser> getAllByIdUser(long idUser);
+
+    List<GroupUser> getAllByIdGroup(long idGroup);
 }

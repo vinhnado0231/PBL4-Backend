@@ -55,4 +55,11 @@ public class GroupUserService implements IGroupUserService {
     public List<GroupUser> getAllByIdUser(long idUser) {
         return groupUserRepository.getAllByIdUser(idUser);
     }
+
+    @Override
+    public List<GroupUser> getAllByIdGroup(long idGroup) {
+        return groupUserRepository.getAllByIdGroup(idGroup);
+    }
+
+
 }
