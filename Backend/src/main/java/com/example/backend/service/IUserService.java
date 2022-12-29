@@ -10,4 +10,5 @@ public interface IUserService {
     User getUserByIdUser(Long idUser);
     void createNewUser(UserCreateDTO userCreateDTO);
     LinkedList<UserDTO> getAllUserDTO();
+    User FindByEmail(String email);
 }

@@ -10,4 +10,5 @@ import java.util.LinkedList;
 public interface IUserRepository extends JpaRepository<User,Long> {
     User findUserByAccount_Username(String username);
 
+    User findUserByEmailUser(String email);
 }
