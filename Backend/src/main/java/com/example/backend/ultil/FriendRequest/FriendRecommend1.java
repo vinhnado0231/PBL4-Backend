@@ -204,11 +204,13 @@ public class FriendRecommend1 {
                 break;
             }
         }
-        int DateOfBirthUser = Integer.parseInt(namsinh.trim());
+        String[] year=namsinh.split("-");
+        int DateOfBirthUser = Integer.parseInt(year[0].trim());
         LinkedList<UserDTO> list = getListRecommendByIdUser(userSimilarityMatrix, users, idUser);
         LinkedList<UserDTO> listFilter = new LinkedList<>();
         for (UserDTO userDTO : list) {
-            int DateOfBirth = Integer.parseInt(userDTO.getDateOfBirthUser().trim());
+            String[] year1=userDTO.getDateOfBirthUser().split("-");
+            int DateOfBirth = Integer.parseInt(year1[0].trim());
             if (Math.abs(DateOfBirth - DateOfBirthUser) < 20) {
                 listFilter.add(userDTO);
             }
