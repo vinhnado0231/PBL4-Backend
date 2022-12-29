@@ -19,4 +19,5 @@ public class GroupDTO {
     private Long idSender;
     private String nameSender;
     private Long idReadMessage;
+    private String avatarGroup;
 }
