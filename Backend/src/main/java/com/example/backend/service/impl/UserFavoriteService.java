@@ -3,6 +3,7 @@ package com.example.backend.service.impl;
 import com.example.backend.model.UserFavorite;
 import com.example.backend.repository.IUserFavoriteRepository;
 import com.example.backend.service.IUserFavoriteService;
+import com.example.backend.ultil.FriendRequest.ChangeFavoriteScore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,8 @@ import java.util.Map;
 public class UserFavoriteService implements IUserFavoriteService {
     @Autowired
     private IUserFavoriteRepository userFavoriteRepository;
+    @Autowired
+    private ChangeFavoriteScore changeFavoriteScore;
 
     @Override
     public void UpdateUserFavorite(long idUSer, Map<String, Float> json) {
@@ -37,5 +40,10 @@ public class UserFavoriteService implements IUserFavoriteService {
     @Override
     public void SaveUserFavorite(UserFavorite userFavorite) {
          userFavoriteRepository.save(userFavorite);;
+    }
+
+    @Override
+    public void ChangeFavoriteScoreByIdUser(long idUser) {
+         changeFavoriteScore.changeFavoriteScore(idUser);
     }
 }

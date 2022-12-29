@@ -30,6 +30,9 @@ public class FriendController {
     @Autowired
     private IAccountService accountService;
 
+    @Autowired
+    private IUserFavoriteService userFavoriteService;
+
     @GetMapping("/send-friend-request")
     public ResponseEntity<Object> sendFriendRequest(@RequestParam Long idFriend, @RequestParam boolean request, Authentication authentication) {
         long idUser = accountService.getIdUserByUsername(authentication.getName());
@@ -62,6 +65,10 @@ public class FriendController {
             users.add(userService.getUserByIdUser(idUser));
             users.add(userService.getUserByIdUser(idFriend));
             groupUserService.addUserToGroup(users, group, null);
+
+            userFavoriteService.ChangeFavoriteScoreByIdUser(idUser);
+            userFavoriteService.ChangeFavoriteScoreByIdUser(idFriend);
+
         } else {
 //            friendService.deleteFriend(friendService.getFriendByIdFriendAndIdUser(idUser, idFriend));
             friendService.deleteFriend(friendService.getFriendByIdUserAndIdFriend(idFriend, idUser));
@@ -80,7 +87,7 @@ public class FriendController {
     @GetMapping("/get-all-friend")
     public ResponseEntity<ArrayList<FriendDTO>> getAllFriend(@RequestParam(required = false) Long idUser, Authentication authentication) {
         if (idUser == null) {
-            idUser =accountService.getIdUserByUsername(authentication.getName());
+            idUser = accountService.getIdUserByUsername(authentication.getName());
         }
         ArrayList<FriendDTO> friends = friendService.getAllFriendByIdUser(idUser);
         return new ResponseEntity<>(friends, HttpStatus.OK);

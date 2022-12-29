@@ -10,4 +10,5 @@ public interface IUserFavoriteService {
     UserFavorite findUserFavoriteByIdUser(long idUser);
 
     void SaveUserFavorite(UserFavorite userFavorite);
+    void ChangeFavoriteScoreByIdUser(long idUser);
 }
