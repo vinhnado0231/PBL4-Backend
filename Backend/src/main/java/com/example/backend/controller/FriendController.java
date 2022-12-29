@@ -90,8 +90,10 @@ public class FriendController {
     public ResponseEntity<ArrayList<FriendDTO>> getAllFriend(@RequestParam(required = false) Long idUser, Authentication authentication) {
         if (idUser == null) {
             idUser = accountService.getIdUserByUsername(authentication.getName());
+            ArrayList<FriendDTO> friends = friendService.getAllFriendByIdUser(idUser);
+            return new ResponseEntity<>(friends, HttpStatus.OK);
         }
-        ArrayList<FriendDTO> friends = friendService.getAllFriendByIdUser(idUser);
+        ArrayList<FriendDTO> friends = friendService.getAllFriendByIdUser(idUser,accountService.getIdUserByUsername(authentication.getName()));
         return new ResponseEntity<>(friends, HttpStatus.OK);
     }
 

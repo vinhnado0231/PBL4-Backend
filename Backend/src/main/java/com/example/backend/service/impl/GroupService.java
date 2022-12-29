@@ -46,37 +46,36 @@ public class GroupService implements IGroupService {
         Message message;
         for (GroupUser groupUser : groupUserList) {
             group = groupUser.getGroup();
-            if(group.isSingle()){
+            if (group.isSingle()) {
                 List<GroupUser> groupUsers = groupUserService.getAllByIdGroup(group.getIdGroup());
                 for (GroupUser groupUser1 : groupUsers) {
-                    if(groupUser1.getUser().getIdUser() != idUser){
+                    if (groupUser1.getUser().getIdUser() != idUser) {
                         group.setNameGroup(groupUser1.getUser().getNameUser());
                         group.setAvatarGroup(groupUser1.getUser().getAvatar());
                         break;
                     }
                 }
-//                group.setNameGroup();
             }
             message = messageService.findLastMessage(group);
             if (message == null) {
                 groupDTO = new GroupDTO(group.getIdGroup(), group.getNameGroup(), group.isSingle(), groupUser.getRoleGroup(),
                         null, null, null, null, null, null,
-                        null,group.getAvatarGroup());
+                        null, group.getAvatarGroup());
                 groupDTOS.add(groupDTO);
                 continue;
             }
-            if(message.getType()==0){
+            if (message.getType() == 0) {
                 groupDTO = new GroupDTO(group.getIdGroup(), group.getNameGroup(), group.isSingle(), groupUser.getRoleGroup(),
                         message.getIdMessage(), message.getMessage(), message.getTime(), message.getType(), message.getIdSender(),
                         userService.getUserByIdUser(message.getIdSender()).getNameUser(),
-                        groupUser.getIdReadMessage(),group.getAvatarGroup());
+                        groupUser.getIdReadMessage(), group.getAvatarGroup());
                 groupDTOS.add(groupDTO);
                 continue;
             }
             groupDTO = new GroupDTO(group.getIdGroup(), group.getNameGroup(), group.isSingle(), groupUser.getRoleGroup(),
                     message.getIdMessage(), null, message.getTime(), message.getType(), message.getIdSender(),
                     userService.getUserByIdUser(message.getIdSender()).getNameUser(),
-                    groupUser.getIdReadMessage(),group.getAvatarGroup());
+                    groupUser.getIdReadMessage(), group.getAvatarGroup());
             groupDTOS.add(groupDTO);
         }
         return groupDTOS;

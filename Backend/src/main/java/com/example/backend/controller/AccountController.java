@@ -35,7 +35,7 @@ public class AccountController {
             Account account = accountService.findAccountByEmail(email);
             if (account == null) {
                 message = "Email not valid";
-                return new ResponseEntity<>(message, HttpStatus.OK);
+                return new ResponseEntity<>(message, HttpStatus.NO_CONTENT);
             }
             accountService.updateToken(account);
             String resetPasswordLink = "http://localhost:3000/home/change-password/" + account.getToken();

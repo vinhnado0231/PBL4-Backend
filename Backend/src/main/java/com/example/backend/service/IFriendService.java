@@ -16,6 +16,8 @@ public interface IFriendService {
 
     ArrayList<FriendDTO> getAllFriendByIdUser(long idUser);
 
+    ArrayList<FriendDTO> getAllFriendByIdUser(long idUser, long myId);
+
     List<FriendDTO> getAllFriendRequestByIdUser(long idUser);
 
     List<FriendDTO> getAllMyFriendRequestByIdUser(long idUser);
