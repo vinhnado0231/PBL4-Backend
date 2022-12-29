@@ -37,8 +37,8 @@ public class FriendController {
     public ResponseEntity<Object> sendFriendRequest(@RequestParam Long idFriend, @RequestParam boolean request, Authentication authentication) {
         long idUser = accountService.getIdUserByUsername(authentication.getName());
         if (request) {
-            if (friendService.getFriendByIdUserAndIdFriend(idUser, idFriend) != null) {
-                return new ResponseEntity<>(HttpStatus.OK);
+            if (friendService.getFriendByIdUserAndIdFriend(idUser, idFriend) != null || friendService.getFriendByIdUserAndIdFriend(idFriend, idUser) != null) {
+                return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
             }
             friendService.createFriendRequest(userService.getUserByIdUser(idUser), idFriend);
         } else {
