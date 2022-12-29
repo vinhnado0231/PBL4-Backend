@@ -120,4 +120,9 @@ public class FriendController {
     public ResponseEntity<Object> RecommendHandler(Authentication authentication) throws ExecutionException, InterruptedException {
         return new ResponseEntity<>(friendService.getListFriendRecommend(accountService.getIdUserByUsername(authentication.getName())), HttpStatus.OK);
     }
+
+    @GetMapping("/search-recommend-friend")
+    public ResponseEntity<Object> RecommendHandler(@RequestParam String search, Authentication authentication) throws ExecutionException, InterruptedException {
+        return new ResponseEntity<>(friendService.getSearchListFriendRecommend(search, accountService.getIdUserByUsername(authentication.getName())), HttpStatus.OK);
+    }
 }

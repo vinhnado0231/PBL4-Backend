@@ -33,4 +33,5 @@ public interface IFriendService {
 
     long getMutualFriend(long idUser1, long idUser2);
 
+    List<FriendDTO> getSearchListFriendRecommend(String search, long idUserByUsername) throws ExecutionException, InterruptedException;
 }

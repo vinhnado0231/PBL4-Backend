@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 @Service
 public class FriendService implements IFriendService {
@@ -95,7 +96,14 @@ public class FriendService implements IFriendService {
         return friendRecommendResult.getListRecommendFriend((int) idUSer);
     }
 
-    public List<FriendDTO> changeFriendToFriendDTO(List<Friend> friends,long idUser) {
+    @Override
+    public List<FriendDTO> getSearchListFriendRecommend(String search, long idUser) throws ExecutionException, InterruptedException {
+        List<FriendDTO> searchList = getListFriendRecommend(idUser);
+        return searchList.stream()
+                .filter(friend -> friend.getName().contains(search)).collect(Collectors.toList());
+    }
+
+    public List<FriendDTO> changeFriendToFriendDTO(List<Friend> friends, long idUser) {
         ArrayList<FriendDTO> result = new ArrayList<>();
         for (Friend friend : friends) {
             User user = userService.getUserByIdUser(friend.getIdFriend());
