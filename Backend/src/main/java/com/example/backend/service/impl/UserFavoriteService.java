@@ -17,15 +17,15 @@ public class UserFavoriteService implements IUserFavoriteService {
     public void UpdateUserFavorite(long idUSer, Map<String, Float> json) {
         UserFavorite userFavorite = findUserFavoriteByIdUser(idUSer);
         userFavorite.setAn_uong(json.get("an_uong"));
-        userFavorite.setAn_uong(json.get("xem_phim"));
-        userFavorite.setAn_uong(json.get("doc_sach"));
-        userFavorite.setAn_uong(json.get("the_thao"));
-        userFavorite.setAn_uong(json.get("ca_nhac"));
-        userFavorite.setAn_uong(json.get("du_lich"));
-        userFavorite.setAn_uong(json.get("coffee"));
-        userFavorite.setAn_uong(json.get("choi_game"));
-        userFavorite.setAn_uong(json.get("code"));
-        userFavorite.setAn_uong(json.get("nau_an"));
+        userFavorite.setXem_phim(json.get("xem_phim"));
+        userFavorite.setDoc_sach(json.get("doc_sach"));
+        userFavorite.setThe_thao(json.get("the_thao"));
+        userFavorite.setCa_nhac(json.get("ca_nhac"));
+        userFavorite.setDu_lich(json.get("du_lich"));
+        userFavorite.setCoffee(json.get("coffee"));
+        userFavorite.setChoi_game(json.get("choi_game"));
+        userFavorite.setCode(json.get("code"));
+        userFavorite.setNau_an(json.get("nau_an"));
         SaveUserFavorite(userFavorite);
     }
 
