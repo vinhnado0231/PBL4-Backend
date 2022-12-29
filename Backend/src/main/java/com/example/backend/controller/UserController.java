@@ -50,8 +50,6 @@ public class UserController {
             Map<String, Object> map = new HashMap<>();
             User user = userService.getUserByIdUser(idUser);
             user.setAccount(null);
-            user.setEmailUser(null);
-            user.setPhoneUser(null);
             map.put("user", user);
             long mutualFriend = friendService.getMutualFriend(idUser, accountService.getIdUserByUsername(authentication.getName()));
             map.put("mutualFriend", mutualFriend);
@@ -82,5 +80,20 @@ public class UserController {
     @GetMapping("/get-user-favorite")
     public ResponseEntity<Object> GetUserFavorite(Authentication authentication) {
         return new ResponseEntity<>(userFavoriteService.findUserFavoriteByIdUser(accountService.getIdUserByUsername(authentication.getName())), HttpStatus.OK);
+    }
+
+    @GetMapping("/search-user-by-email")
+    public ResponseEntity<Object> FindUserByEmail(@RequestParam String search, Authentication authentication) {
+        try {
+            Map<String, Object> map = new HashMap<>();
+            User user = userService.FindByEmail(search);
+            user.setAccount(null);
+            map.put("user", user);
+            long mutualFriend = friendService.getMutualFriend(user.getIdUser(), accountService.getIdUserByUsername(authentication.getName()));
+            map.put("mutualFriend", mutualFriend);
+            return new ResponseEntity<>(map, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }
